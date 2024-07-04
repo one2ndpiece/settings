@@ -1,0 +1,33 @@
+{
+  "name": "simple",
+  // dockerイメージ
+  "build": {
+    "context": ".",
+    "dockerfile": "Dockerfile"
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind,consistency=cached",
+  "workspaceFolder": "${localWorkspaceFolder}",
+  "mounts": [],
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "workbench.colorCustomizations": {
+          "titleBar.activeBackground": "#429c19",
+          "titleBar.activeForeground": "#ffffff",
+          "activityBar.background": "#e302bd",
+          "activityBar.foreground": "#ffffff"
+        },
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnType": true
+        },
+        "editor.formatOnType": true,
+        "editor.formatOnSave": true,
+        "ruff.interpreter": [
+          "/bin/python3"
+        ]
+      }
+    }
+  }
+}
