@@ -9,9 +9,8 @@ RUN mkdir -p workspace/ && chmod -R +x workspace/
 # -----------------------------------------------------
 RUN apt-get install -y git
 # gitの設定
-RUN git config --global user.email "USER_EMAIL" &&\
-    git config --global user.name "YutoTonami" 
-
+RUN git config --global user.email "dummy@dummy.com" &&\
+    git config --global user.name "dummy" 
 # -----------------------------------------------------
 RUN echo "export LANG=ja_JP.UTF-8" >> ~/.bashrc &&\
     source ~/.bashrc
