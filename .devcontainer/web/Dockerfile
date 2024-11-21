@@ -42,3 +42,10 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
     nvm install node &&\
     nvm use node 
 #     npm install -g cdk
+
+# -----------------------------------------------------
+# プロジェクトのディレクトリにファイルをコピー
+COPY .bashrc_additions /tmp/bashrc_additions
+
+# .bashrcに追加する
+RUN cat /tmp/bashrc_additions >> ~/.bashrc
