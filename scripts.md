@@ -107,3 +107,28 @@ git config --global alias.mergeno "merge --no-ff --no-edit"
 # 使用方法
 git mergeno {branch}
 ```
+ものレポで使うコマンド
+```
+# リポジトリをクローン
+git clone --depth 1 --filter=blob:none --sparse https://github.com/tanstack/table.git
+
+# クローンしたディレクトリに移動
+cd table
+
+# 必要なディレクトリをチェックアウト
+git sparse-checkout set examples/react/editable-data
+
+```
+
+# ngrok
+ここに全部書いてある
+https://dashboard.ngrok.com/get-started/setup/linux
+sudoを抜いたコマンド
+```
+curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
+	|  tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null \
+	&& echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
+	|  tee /etc/apt/sources.list.d/ngrok.list \
+	&&  apt update \
+	&&  apt install ngrok
+```
