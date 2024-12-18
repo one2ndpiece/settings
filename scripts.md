@@ -98,6 +98,18 @@ poetry config --local virtualenvs.in-project true
 poetry install
 poetry shell    
 ```
+# uv
+```
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv python pin <version>
+uv sync
+uv python list
+uv run <file>
+uv install <package>
+uv pip install <package>
+uv pip uninstall <package>
+uv pip list
+```
 
 # git
 git merge {branch} --no-ff --no-editのgitエイリアス
@@ -131,4 +143,7 @@ curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
 	|  tee /etc/apt/sources.list.d/ngrok.list \
 	&&  apt update \
 	&&  apt install ngrok
+
+# remixのデフォルトポート
+ngrok http http://localhost:5173
 ```
