@@ -5,9 +5,26 @@
 # aicommit2 のエイリアス
 alias aic='aicommit2 --locale 'jp' --generate 3'
 
-# git ブランチを表示する
-parse_git_branch() { git branch --show-current 2>/dev/null; }
-PS1="(\$(parse_git_branch)) \u@\h:\w\$ "
+# Gitブランチ表示関数
+parse_git_branch() {
+    if [[ -d .git ]]; then
+        local branch=$(git branch --show-current 2>/dev/null)
+        [[ -n "$branch" ]] && echo "($branch)"
+    fi
+}
+
+# 仮想環境のPythonバージョン表示関数
+virtualenv_prompt() {
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        local venv_name=$(basename "$VIRTUAL_ENV")
+        local py_version=$("$VIRTUAL_ENV/bin/python" --version 2>&1 | awk '{print $2}')
+        echo "($venv_name:$py_version)"
+    fi
+}
+
+#　上書き
+export PROMPT_COMMAND='PS1="$(virtualenv_prompt)\$(parse_git_branch)\u@\h:\w\$ "'
+
 
 # 一時ファイルを作成する
 # オプション -e で最後に作成したファイルを実行する
