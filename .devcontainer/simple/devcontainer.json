@@ -7,7 +7,13 @@
   },
   "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind,consistency=cached",
   "workspaceFolder": "${localWorkspaceFolder}",
-  "mounts": [],
+  "mounts": [
+    {
+      "source": "/home/tonami/settings",
+      "target": "/root/settings",
+      "type": "bind"
+    }
+  ],
   "remoteUser": "root",
   "customizations": {
     "vscode": {
@@ -18,16 +24,15 @@
           "activityBar.background": "#e302bd",
           "activityBar.foreground": "#ffffff"
         },
-        "[python]": {
-          "editor.defaultFormatter": "charliermarsh.ruff",
-          "editor.formatOnType": true
-        },
         "editor.formatOnType": true,
-        "editor.formatOnSave": true,
-        "ruff.interpreter": [
-          "/bin/python3"
-        ]
+        "editor.formatOnSave": true
       }
     }
-  }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-from-docker:1": {}
+  },
+  "runArgs": [
+    "--add-host=host.docker.internal:host-gateway"
+  ]
 }
