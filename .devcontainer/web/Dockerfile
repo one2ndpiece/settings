@@ -48,3 +48,5 @@ COPY .bashrc_additions /tmp/bashrc_additions
 
 # .bashrcに追加する
 RUN cat /tmp/bashrc_additions >> ~/.bashrc
+
+RUN apt update && apt install gh
