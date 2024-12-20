@@ -131,6 +131,17 @@ cd table
 git sparse-checkout set examples/react/editable-data
 
 ```
+# github/ghコマンド
+```
+# githubへ接続
+ssh-keygen -t ed25519
+cat ~/.ssh/id_ed25519.pub
+ssh -T git@github.com
+
+# ghコマンド
+gh auth login
+
+```
 
 # ngrok
 ここに全部書いてある
