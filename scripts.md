@@ -137,7 +137,20 @@ git sparse-checkout set examples/react/editable-data
 ssh-keygen -t ed25519
 cat ~/.ssh/id_ed25519.pub
 ssh -T git@github.com
+```
+```.ssh/config
+# アカウント1用設定
+Host github.com-yttnm
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
 
+# アカウント2用設定
+Host github.com-one2ndpiece
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_one2ndpiece
+```
 # ghコマンド
 gh auth login
 
