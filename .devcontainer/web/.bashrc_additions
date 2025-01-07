@@ -59,13 +59,7 @@ scf() {
                 echo "No script record found. Please create a new script first."
             fi
             ;;
-        -h|--help)  # ヘルプ：使用方法を表示
-            echo "Usage: scf [options]"
-            echo "Options:"
-            echo "  -e            Execute the last created script"
-            echo "  -h, --help    Display this help message"
-            echo "  -c            Confirm the last created script"
-            ;;
+
         -c)  # 確認モード：最後に作成されたスクリプトを表示
             if [[ -f "$last_script_path" ]]; then
                 last_script=$(cat "$last_script_path")
@@ -77,19 +71,14 @@ scf() {
                 echo "No script record found. Please create a new script first."
             fi
             ;;
-        *)  # 新規作成モードまたはデフォルトの動作
-            if [[ -n "$1" ]]; then
-                echo "Invalid option: $1"
-                echo "Use 'scf -h' to display help."
-                return 1
-            fi
+        -n)  # 新しいスクリプトを作成
             # タイムスタンプで一意のファイル名を作成
             local timestamp=$(date +"%Y%m%d_%H%M%S")
             local tmpfile="${script_dir}/tmp_script_${timestamp}.sh"
-            
+
             touch "$tmpfile"  # ファイルを作成
             chmod +x "$tmpfile"
-            
+
             # cursorで開き、失敗した場合はcodeを使う
             if ! cursor "$tmpfile" 2>/dev/null; then
                 echo "cursor not available, opening with VS Code..."
@@ -101,11 +90,18 @@ scf() {
                     return 1
                 fi
             fi
-
             echo "Temporary file created and saved at: $tmpfile"
             echo "execute: scf -e"
             # 更新された一時ファイルのパスを記録
             echo "$tmpfile" > "$last_script_path"
+            ;;
+        -h|--help|*)  # ヘルプ表示または無効なオプション
+            echo "Usage: scf [options]"
+            echo "Options:"
+            echo "  -n            Create a new script"
+            echo "  -e            Execute the last created script"
+            echo "  -h, --help    Display this help message"
+            echo "  -c            Confirm the last created script"
             ;;
     esac
 }
