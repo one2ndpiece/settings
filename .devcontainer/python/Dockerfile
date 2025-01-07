@@ -16,18 +16,19 @@ RUN git config --global user.email "tonami.yuto@unkman.jp" &&\
 RUN echo "export LANG=ja_JP.UTF-8" >> ~/.bashrc &&\
     source ~/.bashrc
 # -----------------------------------------------------
-# pyenvのインストール
+# # pyenvのインストール
 RUN export DEBIAN_FRONTEND=noninteractive &&\
+    apt-get update &&\
     apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python3-openssl git &&\
     curl https://pyenv.run | bash &&\
     export PATH="$HOME/.pyenv/bin:$PATH" &&\
     eval "$(pyenv init --path)" &&\
     eval "$(pyenv init -)" &&\
     eval "$(pyenv virtualenv-init -)" &&\
-    pyenv install 3.9.13 &&\
-    pyenv global 3.9.13
+    pyenv install 3.11.4 &&\
+    pyenv global 3.11.4
 # -----------------------------------------------------
-# pyenvとlangを.bashrcに記載するだけ。
+# # pyenvとlangを.bashrcに記載するだけ。
 RUN echo "export PATH=\"$HOME/.pyenv/bin:\$PATH\"" >> ~/.bashrc &&\
     echo 'eval "$(pyenv init --path)"' >> ~/.bashrc &&\
     echo 'eval "$(pyenv init -)"' >> ~/.bashrc &&\
@@ -44,12 +45,8 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
     export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" &&\
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" &&\
     nvm install node &&\
-    nvm use node 
-#     npm install -g cdk
+    nvm use node &&\
+    npm install -g aicommit2
+RUN echo "alias aic='git add -A && aicommit2 --generate 3'" >> ~/.bashrc && source ~/.bashrc
 
-RUN echo "alias aic='aicommit2 --locale 'jp' --generate 3'" >> ~/.bashrc && source ~/.bashrc
-
-# Git ブランチ名をプロンプトに表示する設定を追加
-RUN echo 'parse_git_branch() { git branch --show-current 2>/dev/null; }' >> ~/.bashrc && \
-    echo 'PS1="(\$(parse_git_branch)) \u@\h:\w\$ "' >> ~/.bashrc && \
-    source ~/.bashrc
+RUN apt update && apt install gh
