@@ -16,28 +16,7 @@ RUN git config --global user.email "tonami.yuto@unkman.jp" &&\
 RUN echo "export LANG=ja_JP.UTF-8" >> ~/.bashrc &&\
     source ~/.bashrc
 # -----------------------------------------------------
-# # pyenvのインストール
-RUN export DEBIAN_FRONTEND=noninteractive &&\
-    apt-get update &&\
-    apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python3-openssl git &&\
-    curl https://pyenv.run | bash &&\
-    export PATH="$HOME/.pyenv/bin:$PATH" &&\
-    eval "$(pyenv init --path)" &&\
-    eval "$(pyenv init -)" &&\
-    eval "$(pyenv virtualenv-init -)" &&\
-    pyenv install 3.11.4 &&\
-    pyenv global 3.11.4
-# -----------------------------------------------------
-# # pyenvとlangを.bashrcに記載するだけ。
-RUN echo "export PATH=\"$HOME/.pyenv/bin:\$PATH\"" >> ~/.bashrc &&\
-    echo 'eval "$(pyenv init --path)"' >> ~/.bashrc &&\
-    echo 'eval "$(pyenv init -)"' >> ~/.bashrc &&\
-    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc &&\
-    source ~/.bashrc
-# -----------------------------------------------------
-# poetryのインストール
-RUN curl -sSL https://install.python-poetry.org | python3 - &&\
-    echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> ~/.bashrc &&\
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh &&\
     source ~/.bashrc
 # -----------------------------------------------------
 # nvmからnpmをインストール

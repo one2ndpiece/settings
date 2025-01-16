@@ -2,7 +2,8 @@
 # mermaid
 mermaid live editor
 ```
-docker run --platform linux/amd64 --publish 8000:8080 ghcr.io/mermaid-js/mermaid-live-editor
+docker run --platform linux/amd64 --publish 8000:8080 --rm --pull always ghcr.io/mermaid-js/mermaid-live-editor
+
 ```
 # Box
 boxをマウント（wslで実行）
@@ -68,6 +69,26 @@ aws lambda list-functions --query "Functions[].FunctionName" --profile rentek  |
 t" | grep -- "-All" | tr -d '",' | tee /dev/tty | xargs -I {} aws lambda invoke --function-name {} --log-type Tail /workspace/rentek/tempo/{}.log --profile rentek --cli-read-timeout 120
 ```
 
+## aws-vaultのインストール
+今は事足りているかな～、そんなにprofileを打つことが多くないし
+```
+# 最新バージョンを確認してダウンロード
+wget https://github.com/99designs/aws-vault/releases/latest/download/aws-vault-linux-amd64
+
+# 実行可能にする
+chmod +x aws-vault-linux-amd64
+
+# システムのPATHに移動
+sudo mv aws-vault-linux-amd64 /usr/local/bin/aws-vault
+
+# バックエンドをfileに設定を.bashrcに追加
+echo 'export AWS_VAULT_BACKEND=file' >> ~/.bashrc
+
+# バックエンドをfileに設定
+echo $AWS_VAULT_BACKEND
+
+```
+
 # ollama & aicommit2
 ollama & aicommit2
 ```
@@ -131,6 +152,38 @@ cd table
 git sparse-checkout set examples/react/editable-data
 
 ```
+# github
+```
+# githubへ接続
+ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_{somethig}
+cat ~/.ssh/id_ed25519.pub
+ssh -T git@github.com
+```
+## .ssh/config
+
+```
+# アカウント1用設定
+Host github.com-yttnm
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+
+# アカウント2用設定
+Host github.com-one2ndpiece
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_one2ndpiece
+```
+このconfigの場合git@{Host}:{github-account}/{repository name}.gitとしなければならない。
+以下がその例
+```
+git remote set-url origin git@yttnm:yttnm/universal-hub.git
+```
+
+## gh
+```
+gh auth login
+```
 
 # ngrok
 ここに全部書いてある
@@ -146,4 +199,21 @@ curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
 
 # remixのデフォルトポート
 ngrok http http://localhost:5173
+```
+
+# ネットワーク調べる計算
+```
+# ホスト名を調べる
+nslookup
+dig
+
+# ルーティングを調べる
+traceroute
+
+# ネットワークの疎通を調べる
+ping
+
+# ネットワークの疎通を調べる
+telnet
+
 ```
