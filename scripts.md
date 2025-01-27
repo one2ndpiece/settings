@@ -11,26 +11,6 @@ boxをマウント（wslで実行）
 sudo mount -t drvfs 'C:\Users\戸波勇人\Box' /mnt/box
 ```
 
-# bash
-最初の確認コマンド
-```
-aws --version
-pyenv --version
-cdk --version
-npm --version
-python --version
-which python
-pyenv versions
-aicommit2 --version
-cdk --version
-sam --version
-```
-コマンドを消すコマンド
-```
-Ctrl + u
-```
-
-
 # AWS
 sam local invokeに必要なオプション
 ```
@@ -133,12 +113,22 @@ uv pip list
 ```
 
 # git
+gitのリモートブランチの削除をローカルのブランチに反映させる
+```
+git fetch --prune
+```
 git merge {branch} --no-ff --no-editのgitエイリアス
 ```
 # グローバルに設定
 git config --global alias.mergeno "merge --no-ff --no-edit"
 # 使用方法
 git mergeno {branch}
+
+# logの表示エイリアス
+git config --global alias.log-all "log --oneline --all --graph"
+
+# git editorをcursorに設定
+export GIT_EDITOR="cursor --wait"
 ```
 ものレポで使うコマンド
 ```
@@ -216,4 +206,50 @@ ping
 # ネットワークの疎通を調べる
 telnet
 
+```
+# bash
+最初の確認コマンド
+```
+aws --version
+pyenv --version
+cdk --version
+npm --version
+python --version
+which python
+pyenv versions
+aicommit2 --version
+cdk --version
+sam --version
+```
+コマンドを消すコマンド
+```
+Ctrl + u
+```
+```
+# シェルの設定確認
+set -o
+# シェルの設定を変更 emacsがデフォルト
+set -o emacs
+set -o vi
+```
+# viでの操作を想定して
+## ノーマルモード
+```
+# テキストファイルモード？複数行がかける
+v
+```
+# tmux
+`.tmux.conf`
+```
+setw -g mode-keys vi
+```
+これを追加して以下を実行
+```
+tmux source-file ~/.tmux.conf
+```
+便利ショートカット
+```
+# コピーモード
+Ctrl + b → [
+qで抜ける
 ```
