@@ -30,21 +30,3 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
     nvm use node &&\
     npm install -g cdk &&\
     npm install -g aicommit2
-
-# -----------------------------------------------------
-# プロジェクトのディレクトリにファイルをコピー
-COPY dotfiles/.bashrc_additions /tmp/bashrc_additions
-
-# .bashrcに追加する
-RUN cat /tmp/bashrc_additions >> ~/.bashrc
-
-RUN apt update && apt install ghK
-# .inputrcに追加する
-COPY dotfiles/.inputrc /tmp/inputrc
-RUN cat /tmp/inputrc >> ~/.inputrc &&\
-    bind -f ~/.inputrc
-
-# .tmux.confに追加する
-COPY dotfiles/.tmux.conf /tmp/tmux.conf
-RUN cat /tmp/tmux.conf >> ~/.tmux.conf &&\
-    tmux source-file ~/.tmux.conf
