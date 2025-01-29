@@ -105,6 +105,3 @@ scf() {
             ;;
     esac
 }
-
-# viモードにする
-set -o vi
