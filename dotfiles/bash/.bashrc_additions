@@ -26,8 +26,6 @@ virtualenv_prompt() {
 export PROMPT_COMMAND='PS1="$(virtualenv_prompt)\$(parse_git_branch)\u@\h:\w\$ "'
 
 
-# 一時ファイルを作成する
-# オプション -e で最後に作成したファイルを実行する
 scf() {
     # スクリプト保存ディレクトリを定義
     local script_dir="/tmp/temp_script"
@@ -71,6 +69,44 @@ scf() {
                 echo "No script record found. Please create a new script first."
             fi
             ;;
+        -q)  # クイック実行モード：新しいスクリプトを作成し、保存後に即座に実行
+            # タイムスタンプで一意のファイル名を作成
+            local timestamp=$(date +"%Y%m%d_%H%M%S")
+            local tmpfile="${script_dir}/tmp_script_${timestamp}.sh"
+
+            touch "$tmpfile"  # ファイルを作成
+            chmod +x "$tmpfile"
+
+            # ファイルの更新日時を記録
+            local last_modified=$(stat -c %Y "$tmpfile")
+
+            # cursorで開き、失敗した場合はcodeを使う
+            if ! cursor "$tmpfile" 2>/dev/null; then
+                echo "cursor not available, opening with VS Code..."
+                if ! code "$tmpfile"; then
+                    echo -e "editor not available, exiting...\n"
+                    echo -e "Please use another editor.\n"
+                    echo -e "\nscript file has been made at: $tmpfile\n"
+                    return 1
+                fi
+            fi
+
+            echo "Waiting for the script to be saved..."
+
+            # ファイルの変更を監視
+            while true; do
+                sleep 1
+                new_modified=$(stat -c %Y "$tmpfile")
+                if [[ "$new_modified" != "$last_modified" ]]; then
+                    echo "Script saved. Running..."
+                    "$tmpfile"
+                    break
+                fi
+            done
+
+            # 更新された一時ファイルのパスを記録
+            echo "$tmpfile" > "$last_script_path"
+            ;;
         -n)  # 新しいスクリプトを作成
             # タイムスタンプで一意のファイル名を作成
             local timestamp=$(date +"%Y%m%d_%H%M%S")
@@ -102,6 +138,7 @@ scf() {
             echo "  -e            Execute the last created script"
             echo "  -h, --help    Display this help message"
             echo "  -c            Confirm the last created script"
+            echo "  -q            Create a new script and run immediately after saving"
             ;;
     esac
 }
