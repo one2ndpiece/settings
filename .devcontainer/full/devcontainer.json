@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "full",
   // dockerイメージ
   "build": {
     "context": ".",
@@ -32,7 +32,9 @@
         "editor.formatOnSave": true,
         "ruff.interpreter": [
           "/bin/python3"
-        ]
+        ],
+        "evenBetterToml.formatter.columnWidth": 1,
+        "evenBetterToml.formatter.arrayAutoCollapse": true
       },
       "extensions": [
         "amazonwebservices.aws-toolkit-vscode",

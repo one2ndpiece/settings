@@ -1,4 +1,4 @@
-# neovim
+# neovimのpackerをインストール
 git clone --depth 1 https://github.com/wbthomason/packer.nvim \
     ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
@@ -18,6 +18,6 @@ echo "export VISUAL=nvim" >> ~/.bashrc
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 # プロジェクトのディレクトリにファイルをコピー
-cat ~/settings/dotfiles/.bashrc_additions >> ~/.bashrc && . ~/.bashrc
-cat ~/settings/dotfiles/.inputrc >> ~/.inputrc && bind -f ~/.inputrc
-cat ~/settings/dotfiles/.tmux.conf >> ~/.tmux.conf && tmux source-file ~/.tmux.conf
+cp ~/dotfiles/.bashrc ~/.bashrc && . ~/.bashrc
+cp ~/dotfiles/.inputrc ~/.inputrc && bind -f ~/.inputrc
+cp ~/dotfiles/.tmux.conf ~/.tmux.conf && tmux source-file ~/.tmux.conf

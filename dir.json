@@ -1,0 +1,23 @@
+{
+  "directories": [
+      "src",
+      "tests",
+      "lib"
+  ],
+  "files": [
+      {
+          "name": "index.js",
+          "path": "src/index.js"
+      },
+        {
+            "name": "test.js",
+            "path": "tests/test.js",
+            "files": [
+              {
+                "name": "test_inner.js",
+                "path": "tests/inner/test_inner.js"
+              }
+            ]
+        }
+  ]
+}

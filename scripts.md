@@ -12,16 +12,23 @@ sudo mount -t drvfs 'C:\Users\戸波勇人\Box' /mnt/box
 ```
 
 # AWS
-sam local invokeに必要なオプション
+## sam
+### sam local invokeに必要なオプション
 ```
 sam build
 sam local invoke --event payload.json --container-host host.docker.internal  --container-host-interface 0.0.0.0 --profile=sothink
 ```
+### sam local start-apiに必要なオプション
+```
+sam build
+sam local start-api --container-host host.docker.internal  --container-host-interface 0.0.0.0
+```
+## cdk
 cdk deploy
 ```
 cdk deploy recovery --context acc=rentek --profile=rentek
 ```
-
+## quicksight
 Quicksightダッシュボードのリストを取得
 ```
 aws quicksight list-dashboards --aws-account-id 339713146909 --profile rentek | jq '.DashboardSummaryList[] | {DashboardId, Name}'
@@ -67,6 +74,11 @@ echo 'export AWS_VAULT_BACKEND=file' >> ~/.bashrc
 # バックエンドをfileに設定
 echo $AWS_VAULT_BACKEND
 
+```
+コマンド
+```
+aws-vault --version
+aws-vault exec {profile}
 ```
 
 # ollama & aicommit2
@@ -253,3 +265,33 @@ tmux source-file ~/.tmux.conf
 Ctrl + b → [
 qで抜ける
 ```
+
+# dotnet C#
+```
+apt update && apt install -y dotnet-sdk-8.0
+dotnet --version
+
+# 新規プロジェクト作成
+dotnet new console -o .
+
+# 実行
+dotnet run
+```
+## sam local start-apiをするための準備
+```
+# 新規プロジェクト作成
+dotnet new lambda.EmptyFunction --name HelloLambda
+# パッケージ追加
+dotnet dotnet add ./src/HelloLambda/HelloLambda.csproj package Amazon.Lambda.APIGatewayEvents
+
+```
+
+# zsh
+```
+apt install zsh
+```
+## oh-my-zsh
+```
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
