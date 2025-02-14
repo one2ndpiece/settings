@@ -102,139 +102,16 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# 一時ファイルを作成する
-# オプション -e で最後に作成したファイルを実行する
-scf() {
-    # スクリプト保存ディレクトリを定義
-    local script_dir="/tmp/temp_script"
-    local last_script_path="${script_dir}/last_script_path.txt"
-
-    # ディレクトリが存在しなければ作成
-    mkdir -p "$script_dir"
-
-    case "$1" in
-        -e)  # 実行モード：最後に作成されたスクリプトを実行
-            if [[ -f "$last_script_path" ]]; then
-                last_script=$(cat "$last_script_path")
-                echo "last_script: $last_script"
-                echo -e "\n----------------------------------------\n"
-                cat "$last_script"
-                echo -e "\n----------------------------------------\n"
-                if [[ -f "$last_script" ]]; then
-                    echo -n "Do you want to run the last created script? (y/n): "
-                    read confirm
-                    if [[ "$confirm" == "y" ]]; then
-                        echo "Running the last created script..."
-                        "$last_script"
-                    else
-                        echo "Execution cancelled."
-                    fi
-                else
-                    echo "No script found. Please create a new script first."
-                fi
-            else
-                echo "No script record found. Please create a new script first."
-            fi
-            ;;
-
-        -c)  # 確認モード：最後に作成されたスクリプトを表示
-            if [[ -f "$last_script_path" ]]; then
-                last_script=$(cat "$last_script_path")
-                echo "last_script: $last_script"
-                echo -e "\n----------------------------------------\n"
-                cat "$last_script"
-                echo -e "\n----------------------------------------\n"
-            else
-                echo "No script record found. Please create a new script first."
-            fi
-            ;;
-        -n)  # 新しいスクリプトを作成
-            # タイムスタンプで一意のファイル名を作成
-            local timestamp=$(date +"%Y%m%d_%H%M%S")
-            local tmpfile="${script_dir}/tmp_script_${timestamp}.sh"
-
-            touch "$tmpfile"  # ファイルを作成
-            chmod +x "$tmpfile"
-
-            # cursorで開き、失敗した場合はcodeを使う
-            if ! cursor "$tmpfile" 2>/dev/null; then
-                echo "cursor not available, opening with VS Code..."
-                if ! code "$tmpfile"; then
-                    echo -e "editor not available, exiting...\n"
-                    echo -e "Please use another editor.\n"
-                    echo -e "\nscript file has been made at: $tmpfile\n"
-                    echo -e "command 'scf -e' is available.\n"
-                    return 1
-                fi
-            fi
-            echo "Temporary file created and saved at: $tmpfile"
-            echo "execute: scf -e"
-            # 更新された一時ファイルのパスを記録
-            echo "$tmpfile" > "$last_script_path"
-            ;;
-        -h|--help|*)  # ヘルプ表示または無効なオプション
-            echo "Usage: scf [options]"
-            echo "Options:"
-            echo "  -n            Create a new script"
-            echo "  -e            Execute the last created script"
-            echo "  -h, --help    Display this help message"
-            echo "  -c            Confirm the last created script"
-            ;;
-    esac
-}
+#---------------------------------------------
 
 # aicommit2 のエイリアス
 alias aic='aicommit2 --locale 'jp' --generate 3'
 
-# PROMPT_SUBST を有効にして、PROMPT 内のコマンド置換を毎回実行する
-setopt PROMPT_SUBST
-# 1. カスタム1段目のための関数群
-
-# 仮想環境のPythonバージョン表示関数
-virtualenv_prompt() {
-    if [[ -n "$VIRTUAL_ENV" ]]; then
-        local venv_name
-        venv_name=$(basename "$VIRTUAL_ENV")
-        local py_version
-        py_version=$("$VIRTUAL_ENV/bin/python" --version 2>&1 | awk '{print $2}')
-        echo "($venv_name:$py_version)"
-    fi
-}
-
-# 1段目の文字列を作成する関数
-# 左側：仮想環境情報（存在する場合）とカレントディレクトリの絶対パス（$PWD）
-# 右側：現在日時。左右の間はハイフンで埋める。
-_1st_line() {
-    local venv=$(virtualenv_prompt)
-    local left_text="${venv}$PWD#"
-    # TZ=JST-9 を使用して JST（UTC+9）で日時を取得
-    local right_text="[$(TZ=JST-9 date '+%Y-%m-%d %H:%M:%S')]"
-    local WIDTH=$(tput cols)
-    local left_len=${#left_text}
-    local right_len=${#right_text}
-    local middle_len=$(( WIDTH - left_len - right_len - 1 ))
-    (( middle_len < 0 )) && middle_len=0
-    printf "%s" "$left_text"
-    printf "%${middle_len}s" "" | tr ' ' '-'
-    echo " $right_text"
-}
-
-
-
-# precmd フック用の関数（プロンプト表示前に1段目を出力）
-_print_first_line() {
-    echo "$(_1st_line)"
-}
-
-# precmd_functions 配列に追加して、毎回プロンプト前に実行させる
-precmd_functions+=( _print_first_line )
-
-
-# 2. 2段目は oh‑my‑zsh のデフォルト設定に任せるため、
-# ここでは PROMPT の設定は行わず、テーマ（例: robbyrussell など）が定義する内容がそのまま利用されます。
-
-
+#---------------------------------------------
+# プロンプトの設定
+source "$HOME/.config/zsh/prompt.zsh"
+#---------------------------------------------
+source "$HOME/.config/zsh/scripts.zsh"
 #---------------------------------------------
 # 履歴をファイルに追記する（セッション終了時に上書きせず、既存の履歴に加える）
 setopt append_history
@@ -246,9 +123,9 @@ setopt inc_append_history
 setopt share_history
 
 setopt hist_ignore_all_dups
-
 #---------------------------------------------
 # AWS CLI の補完を有効にする（aws_completer のパスは環境に合わせて変更）
 complete -C '/usr/local/bin/aws_completer' aws
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+
