@@ -81,6 +81,14 @@ aws-vault --version
 aws-vault exec {profile}
 ```
 
+## ECR
+```
+# sothink アカウント
+AWS_ECR=115767075872.dkr.ecr.ap-southeast-2.amazonaws.com
+
+aws ecr get-login-password --profile sothink | docker login --username AWS --password-stdin $AWS_ECR
+```
+
 # ollama & aicommit2
 ollama & aicommit2
 ```
