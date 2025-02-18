@@ -162,6 +162,14 @@ cd table
 git sparse-checkout set examples/react/editable-data
 
 ```
+
+## .gitattributes
+```
+.gitignore merge=ours
+```
+```
+git config --global merge.ours.driver true
+```
 # github
 ```
 # githubへ接続
