@@ -124,5 +124,6 @@ setopt share_history
 
 setopt hist_ignore_all_dups
 #---------------------------------------------
-
-export VIRTUAL_ENV_DISABLE_PROMPT=1
+# 日本語
+export LANG=ja_JP.UTF-8
+export LC_ALL=ja_JP.UTF-8
