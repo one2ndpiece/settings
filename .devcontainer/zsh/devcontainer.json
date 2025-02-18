@@ -9,18 +9,8 @@
 	"workspaceFolder": "${localWorkspaceFolder}",
 	"mounts": [
 		{
-			"source": "/home/tonami/settings",
-			"target": "/root/settings",
-			"type": "bind"
-		},
-		{
-			"source": "/mnt/c/Users/戸波勇人/.aws",
-			"target": "/root/.aws",
-			"type": "bind"
-		},
-		{
-			"source": "/home/tonami/.ssh",
-			"target": "/root/.ssh",
+			"source": "SOURCE_DIR",
+			"target": "TARGET_DIR",
 			"type": "bind"
 		}
 	],
