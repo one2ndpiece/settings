@@ -2,3 +2,4 @@ secrets
 /temp/
 *.code-workspace
 /misc/
+/.devcontainer/
