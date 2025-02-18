@@ -23,7 +23,9 @@
         "evenBetterToml.formatter.columnWidth": 1,
         "evenBetterToml.formatter.arrayAutoCollapse": true
       },
-      "extensions": []
+      "extensions": [
+        "mhutchie.git-graph"
+      ]
     }
   },
   "features": {

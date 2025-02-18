@@ -9,18 +9,8 @@
 	"workspaceFolder": "${localWorkspaceFolder}",
 	"mounts": [
 		{
-			"source": "HOST_SETTINGS_DIR",
-			"target": "/root/settings",
-			"type": "bind"
-		},
-		{
-			"source": "HOST_AWS_DIR",
-			"target": "/root/.aws",
-			"type": "bind"
-		},
-		{
-			"source": "HOST_SSH_DIR",
-			"target": "/root/.ssh",
+			"source": "SOURCE_DIR",
+			"target": "TARGET_DIR",
 			"type": "bind"
 		}
 	],
