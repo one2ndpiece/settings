@@ -5,7 +5,7 @@ DOTFILES="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" >/dev/null 2>&1 && pwd )"
 # zshのインストール
 apt update && apt install -y zsh
 #---------------------------------------------
-ln -sf $DOTFILES/.config/zsh/.zshenv $HOME/.zshenv && . $HOME/.zshenv
+ln -sf $DOTFILES/.zshenv $HOME/.zshenv && . $HOME/.zshenv
 #---------------------------------------------
 # oh-my-zshのインストール
 echo n| sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"

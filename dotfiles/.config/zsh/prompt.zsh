@@ -40,3 +40,6 @@ precmd_functions+=( _print_first_line )
 
 # 2. 2段目は oh‑my‑zsh のデフォルト設定に任せるため、
 # ここでは PROMPT の設定は行わず、テーマ（例: robbyrussell など）が定義する内容がそのまま利用されます。
+
+
+export VIRTUAL_ENV_DISABLE_PROMPT=1
