@@ -1,33 +1,41 @@
-#---------------------------------------------
-aws_profile() {
-    # unset（または -u, --unset ）の場合は解除する
-    if [[ "$1" == "unset" || "$1" == "-u" || "$1" == "--unset" ]]; then
-        unset AWS_PROFILE
-        echo "AWS_PROFILE has been unset."
-        return 0
+# aicommit2 のエイリアス
+alias aic='aicommit2 --locale 'jp' --generate 3'
+
+# Gitブランチ表示関数
+parse_git_branch() {
+    if [[ -d .git ]]; then
+        local branch=$(git branch --show-current 2>/dev/null)
+        [[ -n "$branch" ]] && echo "($branch)"
     fi
-
-    # 引数がなければ使用法を表示
-    if [[ -z "$1" || "$1" == "--help" || "$1" == "-h" ]]; then
-        echo "Usage: aws_profile <profile> | aws_profile unset"
-        return 1
-    fi
-
-    local profile="$1"
-
-    # ~/.aws/credentials に該当プロファイルが存在するかチェック
-    if ! grep -q "^\[$profile\]" ~/.aws/credentials 2>/dev/null; then
-        echo "Error: Profile '$profile' not found in ~/.aws/credentials"
-        return 1
-    fi
-
-    export AWS_PROFILE="$profile"
-    echo "AWS_PROFILE is now set to '$AWS_PROFILE'"
-    # オプション: 現在の認証情報を表示する
-    aws sts get-caller-identity --output table |cat
 }
-#---------------------------------------------
+
+# 仮想環境のPythonバージョン表示関数
+virtualenv_prompt() {
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        local venv_name=$(basename "$VIRTUAL_ENV")
+        local py_version=$("$VIRTUAL_ENV/bin/python" --version 2>&1 | awk '{print $2}')
+        echo "($venv_name:$py_version)"
+    fi
+}
+setopt PROMPT_SUBST
+PROMPT='$(virtualenv_prompt)$(parse_git_branch)%n@%m:%~%# '
+
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey ',' edit-command-line
+
+
+# プロンプト複数起動時のhistory共有
+setopt share_history
+
+# 重複するコマンドのhistory削除
+setopt hist_ignore_all_dups
+
+# コマンドのスペルミスの修正
+setopt correct
+
 # 一時ファイルを作成する
+# オプション -e で最後に作成したファイルを実行する
 scf() {
     # スクリプト保存ディレクトリを定義
     local script_dir="/tmp/temp_script"
@@ -80,18 +88,15 @@ scf() {
             touch "$tmpfile"  # ファイルを作成
             chmod +x "$tmpfile"
 
-            # cursorで開き、失敗した場合はcodeを使う、それも失敗したらviを使う
+            # cursorで開き、失敗した場合はcodeを使う
             if ! cursor "$tmpfile" 2>/dev/null; then
                 echo "cursor not available, opening with VS Code..."
                 if ! code "$tmpfile"; then
-                    echo -e "code not available, opening with vim...\n"
-                    if ! vi "$tmpfile"; then
-                        echo -e "vi not available, exiting...\n"
-                        echo -e "Please use another editor.\n"
-                        echo -e "\nscript file has been made at: $tmpfile\n"
-                        echo -e "command 'scf -e' is available.\n"
-                        return 1
-                    fi
+                    echo -e "editor not available, exiting...\n"
+                    echo -e "Please use another editor.\n"
+                    echo -e "\nscript file has been made at: $tmpfile\n"
+                    echo -e "command 'scf -e' is available.\n"
+                    return 1
                 fi
             fi
             echo "Temporary file created and saved at: $tmpfile"

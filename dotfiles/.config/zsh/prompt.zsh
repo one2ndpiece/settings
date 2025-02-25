@@ -15,17 +15,18 @@ virtualenv_prompt() {
     fi
 }
 
-# aws-vault（または AWS_PROFILE）の表示関数
-aws_profile_prompt() {
-    if [[ -n "$AWS_PROFILE" ]]; then
-        echo "(profile:$AWS_PROFILE)"
-    fi
-}
+# AWS_PROFILEの表示関数
+# aws_profile_prompt() {
+#     if [[ -n "$AWS_PROFILE" ]]; then
+#         echo "(profile:$AWS_PROFILE)"
+#     fi
+# }
 
 _1st_line() {
     local venv=$(virtualenv_prompt)
-    local aws_profile=$(aws_profile_prompt)
-    local text="\n${venv}${aws_profile}($PWD)($(TZ=JST-9 date '+%Y-%m-%d %H:%M:%S'))"
+    # local aws_profile=$(aws_profile_prompt)
+    # local text="\n${venv}${aws_profile}($PWD)($(TZ=JST-9 date '+%Y-%m-%d %H:%M:%S'))"
+    local text="\n${venv}($PWD)($(TZ=JST-9 date '+%Y-%m-%d %H:%M:%S'))"
     echo "${text}"
 }
 
