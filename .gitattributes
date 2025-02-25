@@ -1,2 +1,2 @@
 .gitignore merge=ours
-.devcontainer/ merge
+.devcontainer/* merge=ours
