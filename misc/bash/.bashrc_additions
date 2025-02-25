@@ -1,33 +1,31 @@
-#---------------------------------------------
-aws_profile() {
-    # unset（または -u, --unset ）の場合は解除する
-    if [[ "$1" == "unset" || "$1" == "-u" || "$1" == "--unset" ]]; then
-        unset AWS_PROFILE
-        echo "AWS_PROFILE has been unset."
-        return 0
+#######################################################
+# .bashrc_additions
+#######################################################
+
+# aicommit2 のエイリアス
+alias aic='aicommit2 --locale 'jp' --generate 3'
+
+# Gitブランチ表示関数
+parse_git_branch() {
+    if [[ -d .git ]]; then
+        local branch=$(git branch --show-current 2>/dev/null)
+        [[ -n "$branch" ]] && echo "($branch)"
     fi
-
-    # 引数がなければ使用法を表示
-    if [[ -z "$1" || "$1" == "--help" || "$1" == "-h" ]]; then
-        echo "Usage: aws_profile <profile> | aws_profile unset"
-        return 1
-    fi
-
-    local profile="$1"
-
-    # ~/.aws/credentials に該当プロファイルが存在するかチェック
-    if ! grep -q "^\[$profile\]" ~/.aws/credentials 2>/dev/null; then
-        echo "Error: Profile '$profile' not found in ~/.aws/credentials"
-        return 1
-    fi
-
-    export AWS_PROFILE="$profile"
-    echo "AWS_PROFILE is now set to '$AWS_PROFILE'"
-    # オプション: 現在の認証情報を表示する
-    aws sts get-caller-identity --output table |cat
 }
-#---------------------------------------------
-# 一時ファイルを作成する
+
+# 仮想環境のPythonバージョン表示関数
+virtualenv_prompt() {
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        local venv_name=$(basename "$VIRTUAL_ENV")
+        local py_version=$("$VIRTUAL_ENV/bin/python" --version 2>&1 | awk '{print $2}')
+        echo "($venv_name:$py_version)"
+    fi
+}
+
+#　上書き
+export PROMPT_COMMAND='PS1="$(virtualenv_prompt)\$(parse_git_branch)\u@\h:\w\$ "'
+
+
 scf() {
     # スクリプト保存ディレクトリを定義
     local script_dir="/tmp/temp_script"
@@ -45,8 +43,7 @@ scf() {
                 cat "$last_script"
                 echo -e "\n----------------------------------------\n"
                 if [[ -f "$last_script" ]]; then
-                    echo -n "Do you want to run the last created script? (y/n): "
-                    read confirm
+                    read -p "Do you want to run the last created script? (y/n): " confirm
                     if [[ "$confirm" == "y" ]]; then
                         echo "Running the last created script..."
                         "$last_script"
@@ -72,6 +69,44 @@ scf() {
                 echo "No script record found. Please create a new script first."
             fi
             ;;
+        -q)  # クイック実行モード：新しいスクリプトを作成し、保存後に即座に実行
+            # タイムスタンプで一意のファイル名を作成
+            local timestamp=$(date +"%Y%m%d_%H%M%S")
+            local tmpfile="${script_dir}/tmp_script_${timestamp}.sh"
+
+            touch "$tmpfile"  # ファイルを作成
+            chmod +x "$tmpfile"
+
+            # ファイルの更新日時を記録
+            local last_modified=$(stat -c %Y "$tmpfile")
+
+            # cursorで開き、失敗した場合はcodeを使う
+            if ! cursor "$tmpfile" 2>/dev/null; then
+                echo "cursor not available, opening with VS Code..."
+                if ! code "$tmpfile"; then
+                    echo -e "editor not available, exiting...\n"
+                    echo -e "Please use another editor.\n"
+                    echo -e "\nscript file has been made at: $tmpfile\n"
+                    return 1
+                fi
+            fi
+
+            echo "Waiting for the script to be saved..."
+
+            # ファイルの変更を監視
+            while true; do
+                sleep 1
+                new_modified=$(stat -c %Y "$tmpfile")
+                if [[ "$new_modified" != "$last_modified" ]]; then
+                    echo "Script saved. Running..."
+                    "$tmpfile"
+                    break
+                fi
+            done
+
+            # 更新された一時ファイルのパスを記録
+            echo "$tmpfile" > "$last_script_path"
+            ;;
         -n)  # 新しいスクリプトを作成
             # タイムスタンプで一意のファイル名を作成
             local timestamp=$(date +"%Y%m%d_%H%M%S")
@@ -80,18 +115,15 @@ scf() {
             touch "$tmpfile"  # ファイルを作成
             chmod +x "$tmpfile"
 
-            # cursorで開き、失敗した場合はcodeを使う、それも失敗したらviを使う
+            # cursorで開き、失敗した場合はcodeを使う
             if ! cursor "$tmpfile" 2>/dev/null; then
                 echo "cursor not available, opening with VS Code..."
                 if ! code "$tmpfile"; then
-                    echo -e "code not available, opening with vim...\n"
-                    if ! vi "$tmpfile"; then
-                        echo -e "vi not available, exiting...\n"
-                        echo -e "Please use another editor.\n"
-                        echo -e "\nscript file has been made at: $tmpfile\n"
-                        echo -e "command 'scf -e' is available.\n"
-                        return 1
-                    fi
+                    echo -e "editor not available, exiting...\n"
+                    echo -e "Please use another editor.\n"
+                    echo -e "\nscript file has been made at: $tmpfile\n"
+                    echo -e "command 'scf -e' is available.\n"
+                    return 1
                 fi
             fi
             echo "Temporary file created and saved at: $tmpfile"
@@ -106,6 +138,7 @@ scf() {
             echo "  -e            Execute the last created script"
             echo "  -h, --help    Display this help message"
             echo "  -c            Confirm the last created script"
+            echo "  -q            Create a new script and run immediately after saving"
             ;;
     esac
 }

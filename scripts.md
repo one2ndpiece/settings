@@ -88,6 +88,26 @@ AWS_ECR=115767075872.dkr.ecr.ap-southeast-2.amazonaws.com
 
 aws ecr get-login-password --profile sothink | docker login --username AWS --password-stdin $AWS_ECR
 ```
+### docker-credential-helper-ecrをインストール
+```
+apt install docker-credential-helper-ecr
+```
+```~/.docker/config.json
+{
+    "credsStore": "ecr-login"
+}
+```
+### session-manager-pluginをインストール
+AWS CLIのECRコマンドでコンテナ内のコマンドを実行
+```
+curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
+dpkg -i session-manager-plugin.deb
+```
+コンテナ内のコマンドを実行
+```
+aws ecs execute-command --cluster $CLUSTER --task $TASK --container web --interactive --command "printenv"
+
+```
 
 # ollama & aicommit2
 ollama & aicommit2
@@ -117,7 +137,7 @@ sudo chown -R tonami:tonami /workspace/rentek
 ```
 poetry config --local virtualenvs.in-project true
 poetry install
-poetry shell    
+poetry shell
 ```
 # uv
 ```
@@ -162,13 +182,13 @@ cd table
 git sparse-checkout set examples/react/editable-data
 
 ```
-
 ## .gitattributes
 ```
+git config merge.ours.driver true
+```
+```.gitattributes
 .gitignore merge=ours
-```
-```
-git config --global merge.ours.driver true
+
 ```
 # github
 ```
@@ -202,7 +222,11 @@ git remote set-url origin git@yttnm:yttnm/universal-hub.git
 ```
 gh auth login
 ```
+### editorをcursorに設定
+```
+gh config set editor "cursor --wait"
 
+```
 # ngrok
 ここに全部書いてある
 https://dashboard.ngrok.com/get-started/setup/linux
@@ -311,3 +335,16 @@ apt install zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
+# Azure CLI
+install
+```
+curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+```
+az login
+```
+az login --service-principal -u {application_id} -p {client_secret} --tenant {tenant_id} --allow-no-subscriptions
+```
+access tokenを取得
+```
+az account get-access-token
+```

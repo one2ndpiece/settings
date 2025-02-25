@@ -103,7 +103,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #---------------------------------------------
-
 # aicommit2 のエイリアス
 alias aic='aicommit2 --locale 'jp' --generate 3'
 
@@ -127,3 +126,12 @@ setopt hist_ignore_all_dups
 # 日本語
 export LANG=ja_JP.UTF-8
 export LC_ALL=ja_JP.UTF-8
+
+autoload -Uz +X bashcompinit && bashcompinit
+if [ -f "/etc/bash_completion.d/azure-cli" ]; then
+    source /etc/bash_completion.d/azure-cli
+fi
+
+
+. "$HOME/.local/bin/env"
+
