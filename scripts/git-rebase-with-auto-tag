@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# git-rebase-with-auto-tag
+
+# 現在のブランチ名を取得
+branch=$(git rev-parse --abbrev-ref HEAD) || {
+  echo "[ERROR] ブランチ名の取得に失敗しました"
+  exit 1
+}
+
+# タグのプレフィックスを作成
+prefix="${branch}-old-"
+
+# 既存の同一パターンのタグを取得し、最大の番号を探す
+max_num=0
+for tag in $(git tag --list "${prefix}*"); do
+  # タグ名から数字部分を抽出
+  num=${tag##${prefix}}
+  if [[ $num =~ ^[0-9]+$ ]] && [ "$num" -gt "$max_num" ]; then
+    max_num=$num
+  fi
+done
+
+# 次の連番を決定
+next_num=$((max_num + 1))
+new_tag="${prefix}${next_num}"
+
+# 現在のHEADにタグを付与
+git tag "$new_tag" || {
+  echo "[ERROR] タグ '$new_tag' の作成に失敗しました"
+  exit 1
+}
+echo "[INFO] タグ '$new_tag' を $(git rev-parse HEAD) に作成しました。"
+
+# 引数をそのまま渡して git rebase を実行
+git rebase "$@"
+reb_ret=$?
+
+if [ $reb_ret -eq 0 ]; then
+  echo "[INFO] Rebaseが成功しました。"
+else
+  echo "[WARN] Rebaseが失敗しました。状況に応じて修正してください。"
+fi
+
+exit $reb_ret

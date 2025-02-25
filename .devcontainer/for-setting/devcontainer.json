@@ -29,11 +29,12 @@
         "evenBetterToml.formatter.columnWidth": 1,
         "evenBetterToml.formatter.arrayAutoCollapse": true,
         "cody.chat.preInstruction": "Answer all my questions in Japanese.",
-        "cody.experimental.commitMessage": true
+        "cody.experimental.commitMessage": true,
       },
       "extensions": [
         "mhutchie.git-graph",
-        "sourcegraph.cody-ai"
+        "sourcegraph.cody-ai",
+        "vscode-icons-team.vscode-icons"
       ]
     }
   },

@@ -133,5 +133,3 @@ if [ -f "/etc/bash_completion.d/azure-cli" ]; then
 fi
 
 
-. "$HOME/.local/bin/env"
-
