@@ -29,5 +29,4 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" &&\
     nvm install node &&\
     nvm use node &&\
-    npm install -g cdk &&\
-    npm install -g aicommit2
+    npm install -g cdk
