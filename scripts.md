@@ -90,7 +90,7 @@ aws ecr get-login-password --profile sothink | docker login --username AWS --pas
 ```
 ### docker-credential-helper-ecrをインストール
 ```
-apt install docker-credential-helper-ecr
+apt install amazon-ecr-credential-helper
 ```
 ```~/.docker/config.json
 {
@@ -189,6 +189,25 @@ git config merge.ours.driver true
 ```.gitattributes
 .gitignore merge=ours
 
+```
+## delta
+
+```
+cargo install git-delta
+```
+```.gitconfig
+[core]
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+	side-by-side = true
+  diff-so-fancy=true
+  keep-plus-minus-markers=true
+  minus-emph-style="bold 94 89"
+  plus-emph-style="bold 29 29"
+  hunk-header-style="omit"
+  line-numbers=true
 ```
 # github
 ```

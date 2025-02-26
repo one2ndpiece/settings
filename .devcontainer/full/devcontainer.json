@@ -34,7 +34,9 @@
           "/bin/python3"
         ],
         "evenBetterToml.formatter.columnWidth": 1,
-        "evenBetterToml.formatter.arrayAutoCollapse": true
+        "evenBetterToml.formatter.arrayAutoCollapse": true,
+        "cody.experimental.commitMessage": true,
+        "cody.chat.preInstruction": "Answer alwayas in Japanese",
       },
       "extensions": [
         "amazonwebservices.aws-toolkit-vscode",

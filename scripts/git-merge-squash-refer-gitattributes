@@ -1,0 +1,51 @@
+#!/bin/bash
+# ブランチ名が引数として与えられているか確認
+if [ "$#" -ne 1 ]; then
+  echo "使い方: $0 <merge対象ブランチ>"
+  exit 1
+fi
+
+TARGET_BRANCH="$1"
+
+# merge --squash を実行
+echo "git merge --squash ${TARGET_BRANCH} を実行します..."
+git merge --squash "${TARGET_BRANCH}"
+
+# .gitattributes の存在チェック
+if [ ! -f .gitattributes ]; then
+  echo ".gitattributes ファイルが見つかりません。"
+  exit 1
+fi
+
+# merge=ours を含むエントリのファイルパスを抽出
+files=()
+while IFS= read -r line; do
+  # 空行やコメント行はスキップ
+  if [[ -z "$line" ]] || [[ "$line" =~ ^# ]]; then
+    continue
+  fi
+  # merge=ours が含まれている行のみ対象
+  if echo "$line" | grep -q "merge=ours"; then
+    # 行をスペースで分割し、最初のトークン（ファイル名/パターン）を取得
+    token=$(echo "$line" | awk '{print $1}')
+    files+=("$token")
+  fi
+done < .gitattributes
+
+if [ ${#files[@]} -eq 0 ]; then
+  echo ".gitattributes に merge=ours を含むエントリがありません。"
+else
+  echo "対象ファイル: ${files[@]}"
+  # 対象ファイルに対して git reset と git restore を実行
+  git reset "${files[@]}"
+  git restore "${files[@]}"
+fi
+
+# 未追跡ファイル・ディレクトリの削除
+git clean -df
+
+# 全体のリセットと再ステージング
+git reset .
+git add .
+
+echo "一連の処理が完了しました。"
