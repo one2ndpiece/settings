@@ -11,7 +11,7 @@ mkdir -p $HOME/bin/scripts
 cp -r $SETTINGS/scripts/* $HOME/bin/scripts/
 
 # 3. PATHにスクリプトディレクトリを追加する設定を.zshrcに追記し、即時反映
-echo 'export PATH="$HOME/bin/scripts:$PATH"' >> $ZDOTDIR/.zshrc
+echo 'export PATH="$HOME/bin/scripts:$PATH"' >> $ZDOTDIR/custom.zsh
 source $ZDOTDIR/.zshrc
 
 # 4. $HOME/bin/scripts内の「git-」で始まるファイルからaliasを自動生成
