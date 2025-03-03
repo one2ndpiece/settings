@@ -10,6 +10,8 @@ ln -sf $DOTFILES/.zshenv $HOME/.zshenv && . $HOME/.zshenv
 # oh-my-zshのインストール
 echo n| sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 #---------------------------------------------
+touch $DOTFILES/.config/zsh/custom.zsh
+#---------------------------------------------
 mkdir -p $HOME/.config/zsh
 for file in $DOTFILES/.config/zsh/{*,.[!.]*}; do
   ln -sf "$file" "$HOME/.config/zsh"
