@@ -367,3 +367,14 @@ access tokenを取得
 ```
 az account get-access-token
 ```
+
+# Docker
+```
+docker compose up --build --watch
+```
+```
+aws ecr create-repository --repository-name my-repository --region <your-region>
+docker build --target prd -t my-app:latest -f docker/Dockerfile .
+docker tag my-app:latest <aws_account_id>.dkr.ecr.<your-region>.amazonaws.com/my-repository:latest
+docker push <aws_account_id>.dkr.ecr.<your-region>.amazonaws.com/my-repository:latest
+```
