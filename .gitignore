@@ -1,4 +1,6 @@
 /temp/
-/misc/
+mugicha.toml
+summary.md
 custom.zsh
-/.devcontainer/do-not-commit
+**/do-not-commit/
+*.code-workspace
