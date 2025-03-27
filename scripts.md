@@ -170,7 +170,8 @@ git config --global alias.log-all "log --oneline --all --graph"
 # git editorをcursorに設定
 export GIT_EDITOR="cursor --wait"
 ```
-ものレポで使うコマンド
+## ものレポで使うコマンド
+Part1
 ```
 # リポジトリをクローン
 git clone --depth 1 --filter=blob:none --sparse https://github.com/tanstack/table.git
@@ -180,7 +181,14 @@ cd table
 
 # 必要なディレクトリをチェックアウト
 git sparse-checkout set examples/react/editable-data
-
+```
+Part2 こっちの方が使えるかも
+```
+git clone --filter=blob:none --no-checkout https://github.com/aws/aws-cdk.git
+cd aws-cdk
+git sparse-checkout init --cone
+git sparse-checkout set packages/aws-cdk-lib/aws-rds
+git checkout main
 ```
 ## .gitattributes
 ```
