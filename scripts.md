@@ -332,10 +332,16 @@ tmux source-file ~/.tmux.conf
 Ctrl + b → [
 qで抜ける
 ```
-
-# dotnet C#
+# C#
+## ctags
+methodやclassを解析
+cmはclassとmethodの意味
 ```
-apt update && apt install -y dotnet-sdk-8.0
+ctags -x --languages=C# --kinds-C#=cm file.cs
+```
+## dotnet C#
+```
+apt update && apt install -y dotnet-sdk-9.0
 dotnet --version
 
 # 新規プロジェクト作成
@@ -343,6 +349,11 @@ dotnet new console -o .
 
 # 実行
 dotnet run
+```
+別バージョンをinstallしたい時
+```
+apt remove -y dotnet-sdk-7.0 dotnet-host-7.0
+apt install -y dotnet-sdk-9.0
 ```
 ## sam local start-apiをするための準備
 ```
@@ -385,4 +396,25 @@ aws ecr create-repository --repository-name my-repository --region <your-region>
 docker build --target prd -t my-app:latest -f docker/Dockerfile .
 docker tag my-app:latest <aws_account_id>.dkr.ecr.<your-region>.amazonaws.com/my-repository:latest
 docker push <aws_account_id>.dkr.ecr.<your-region>.amazonaws.com/my-repository:latest
+```
+
+# npmとnvm
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash &&\
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" &&\
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" &&\
+nvm install node &&\
+nvm use node
+```
+
+# java
+```
+# install java
+apt install openjdk-21-jdk
+
+# install sdkman これがあったらjavaもインストールできる？？
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdk install maven
+sdk install springboot
 ```

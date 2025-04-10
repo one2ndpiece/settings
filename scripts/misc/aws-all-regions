@@ -1,0 +1,142 @@
+#!/bin/env zsh
+# aws-regions: 全リージョンに対して、指定された AWS コマンドを実行し、結果を JSON 配列形式で出力する
+
+# --- ヘルプメッセージ ---
+usage() {
+cat <<EOF
+  Usage: aws-all-regions [options] -- <aws_command>
+
+  Options:
+    --help, -h            このヘルプメッセージを表示します。
+
+  Examples:
+    # ヘルプ表示
+    aws-all-regions --help
+
+    # 全リージョンの t2.micro インスタンスを検索 (結果は整形された JSON 配列)
+    aws-all-regions -- aws ec2 describe-instances --filters 'Name=instance-type,Values=t2.micro'
+
+    # 全リージョンの S3 バケットをリスト
+    aws-all-regions -- aws s3api list-buckets
+
+    # 結果をさらに jq で絞り込む
+    aws-all-regions -- aws iam list-users | jq '[.[] | select(.result.Users != null) | {region: .region, users: .result.Users[]? | {UserName, Arn}}]'
+
+  Notes:
+    - コマンドの出力 (result) は、AWS CLI の出力が JSON であれば JSON オブジェクト/配列として、
+      それ以外 (エラーメッセージやテキスト出力など) であれば文字列として格納されます。
+    - jq コマンドと AWS CLI がインストールされている必要があります。
+EOF
+  exit 0
+}
+
+# --- 引数解析 ---
+aws_cmd_array=()
+
+# オプションは --help のみ考慮
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --help|-h)
+      usage
+      ;;
+    --) # オプションの終わりを示すマーカー
+      shift # -- を消費
+      aws_cmd_array=("$@") # 残り全てを AWS コマンド配列とする
+      break # これ以上オプション解析はしない
+      ;;
+    -*) # 未知のオプション (help以外はエラー)
+      echo "Error: Unknown option: $1. Only --help is supported. Use '--' to separate the AWS command." >&2
+      usage
+      exit 1
+      ;;
+    *) # オプションでも -- でもない引数が見つかった -> 想定外
+      echo "Error: AWS command arguments must be preceded by '--'." >&2
+      echo "Example: $0 -- aws ec2 describe-instances ..." >&2
+      usage # ヘルプを表示
+      exit 1 # エラー終了
+      ;;
+  esac
+done
+
+# コマンドが指定されていない場合はエラー
+if [[ ${#aws_cmd_array[@]} -eq 0 ]]; then
+  echo "Error: AWS command arguments are required (e.g., -- aws ec2 describe-instances)." >&2
+  usage
+  exit 1
+fi
+
+# コマンドの先頭が 'aws' であることを簡易チェック (必須ではないが、意図通りか確認)
+if [[ "${aws_cmd_array[1]}" != "aws" ]]; then
+    echo "Warning: The command provided after '--' does not start with 'aws'. Proceeding anyway." >&2
+    echo "Provided command array: ${aws_cmd_array[@]}" >&2
+fi
+
+
+# --- 依存関係チェック ---
+if ! command -v jq &> /dev/null; then
+    echo "Error: jq is not installed. Please install jq." >&2
+    exit 1
+fi
+
+# --- リージョン取得 ---
+REGIONS=$(aws ec2 describe-regions --query "Regions[?OptInStatus=='opt-in-not-required' || OptInStatus=='opted-in'].RegionName" --output text 2>/dev/null)
+if [ $? -ne 0 ] || [ -z "$REGIONS" ]; then
+  echo "Error: Failed to retrieve AWS regions. Check your AWS credentials and permissions." >&2
+  exit 1
+fi
+
+# --- メイン処理 ---
+process_region() {
+  local region="$1"
+  # グローバルスコープの aws_cmd_array ('aws', 'ec2', ...) をコピーし、末尾に --region を追加
+  local current_cmd_array=("${aws_cmd_array[@]}" --region "$region")
+
+  # コマンド実行 (標準エラーもキャプチャ)
+  # current_cmd_array の先頭要素 (通常は 'aws') が実行される
+  local output
+  local status
+  output=$( "${current_cmd_array[@]}" 2>&1 )
+  status=$? # コマンドの終了ステータス
+
+  # 結果を格納する変数
+  local json_line
+
+  # AWS CLI の出力が JSON として有効か試す
+  if echo "$output" | jq -e . > /dev/null 2>&1; then
+      # 有効な JSON の場合、JSON 値として埋め込む (jq -nc)
+      json_line=$(jq -nc --arg region "$region" --argjson result "$output" '{region: $region, result: $result}')
+  else
+      # JSON でない場合、文字列として埋め込む (jq -nc)
+      json_line=$(jq -nc --arg region "$region" --arg result "$output" '{region: $region, result: $result}')
+  fi
+
+  # jq の実行自体が失敗した場合のエラーハンドリング
+  if [ $? -ne 0 ]; then
+      # エラーは標準エラーに出力
+      echo "Error: jq failed to create JSON object for region $region. Command status: $status, Command output was: $output" >&2
+      # エラーを示す JSON を代わりに生成 (標準出力へ)
+      json_line=$(jq -nc --arg region "$region" --arg error_msg "Internal jq error processing this region (Command status: $status)" --arg raw_output "$output" '{region: $region, error: $error_msg, raw_output: $raw_output}')
+  fi
+
+  # この関数は結果の JSON 行を標準出力に出力する
+  echo "$json_line"
+}
+
+# --- 結果の収集と出力 ---
+# 各リージョンで関数を実行し、その標準出力（JSON行）を収集する
+collect_results() {
+    for region in $REGIONS; do
+        process_region "$region"
+    done
+}
+
+collect_results | jq -s '.'
+
+# 最終的な jq コマンドの終了ステータスを確認
+jq_status=$?
+if [ $jq_status -ne 0 ]; then
+  echo "Error: Final jq processing failed with status $jq_status." >&2
+  exit $jq_status
+fi
+
+exit 0
