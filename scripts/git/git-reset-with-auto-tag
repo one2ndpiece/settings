@@ -31,14 +31,14 @@ git tag "$new_tag" || {
 }
 echo "[INFO] タグ '$new_tag' を $(git rev-parse HEAD) に作成しました。"
 
-# 引数をそのまま渡して git rebase を実行
-git rebase "$@"
-reb_ret=$?
+# git reset --hard main を実行
+git reset --hard main
+reset_ret=$?
 
-if [ $reb_ret -eq 0 ]; then
-  echo "[INFO] Rebaseが成功しました。"
+if [ $reset_ret -eq 0 ]; then
+  echo "[INFO] reset --hard main が成功しました。"
 else
-  echo "[WARN] Rebaseが失敗しました。状況に応じて修正してください。"
+  echo "[WARN] reset --hard main が失敗しました。状況に応じて修正してください。"
 fi
 
-exit $reb_ret
+exit $reset_ret
