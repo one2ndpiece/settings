@@ -9,8 +9,8 @@
   "workspaceFolder": "${localWorkspaceFolder}",
   "mounts": [
     {
-      "source": "SOURCE_DIR",
-      "target": "TARGET_DIR",
+      "source": "/home/tonami/.ssh",
+      "target": "/root/.ssh",
       "type": "bind"
     }
   ],
