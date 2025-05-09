@@ -1,7 +1,6 @@
 # Dockerfile
 FROM ubuntu:22.04
 SHELL ["/bin/bash", "-c"]
-COPY dotfiles/.bashrc ~/.bashrc
 # 必要なパッケージのインストールや設定をここに追加
 RUN apt update && apt install -y less language-pack-ja-base language-pack-ja zip curl jq groff git tmux gh neovim dotnet-sdk-9.0
 
