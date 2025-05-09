@@ -15,7 +15,7 @@ sudo mount -t drvfs 'C:\Users\戸波勇人\Box' /mnt/box
 ## sam
 ### sam local invokeに必要なオプション
 ```
-sam build
+sam build --use-container
 sam local invoke --event payload.json --container-host host.docker.internal  --container-host-interface 0.0.0.0 --profile=sothink
 ```
 ### sam local start-apiに必要なオプション
@@ -106,7 +106,24 @@ dpkg -i session-manager-plugin.deb
 コンテナ内のコマンドを実行
 ```
 aws ecs execute-command --cluster $CLUSTER --task $TASK --container web --interactive --command "printenv"
+```
+ポートフォワーディング
+EC2にて。(debian)
+```
+sudo apt install snapd -y
 
+# 確認
+sudo systemctl status snapd
+
+sudo snap install amazon-ssm-agent --classic
+
+# 確認
+sudo systemctl status amazon-ssm-agent
+```
+コントロール側で。
+```
+aws ssm describe-instance-information 
+aws ssm start-session --target "i-07799feaf42145e07" --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters '{"portNumber":["3306"],"localPortNumber":["1053"],"host":["10.0.3.104"]}'
 ```
 
 # ollama & aicommit2
