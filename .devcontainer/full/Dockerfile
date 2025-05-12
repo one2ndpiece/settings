@@ -29,3 +29,6 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
     nvm install node &&\
     nvm use node &&\
     npm install -g cdk
+# -----------------------------------------------------
+RUN git clone https://github.com/one2ndpiece/settings.git /opt/settings &&\
+    /opt/settings/dotfiles/install/install-all.sh
