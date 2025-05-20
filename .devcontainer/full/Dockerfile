@@ -11,6 +11,11 @@ RUN mkdir -p workspace/ && chmod -R +x workspace/
 RUN git config --global user.email "dummy@dummy.com" &&\
     git config --global user.name "dummy" &&\
     git config --global core.quotepath false
+# -----------------------------------------------------
+# 日本語環境の設定
+RUN apt-get update &&\
+    DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata &&\
+    ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 # -----------------------------------------------------
 RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*') &&\
@@ -28,7 +33,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" &&\
     nvm install node &&\
     nvm use node &&\
-    npm install -g cdk
+    npm install -g cdk m365
 # -----------------------------------------------------
 RUN git clone https://github.com/one2ndpiece/settings.git /opt/settings &&\
     /opt/settings/dotfiles/install/install-all.sh
