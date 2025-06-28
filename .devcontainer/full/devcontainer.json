@@ -30,13 +30,25 @@
         },
         "editor.formatOnType": true,
         "editor.formatOnSave": true,
+        "python.analysis.typeCheckingMode": "strict",
+        "python.analysis.autoImportCompletions": true,
         "ruff.interpreter": [
           "/bin/python3"
         ],
+        "editor.codeActionsOnSave": {
+          "source.fixAll.ruff": "explicit"
+        },
+        "mypy-type-checker.importStrategy": "fromEnvironment",
+        "mypy-type-checker.path": [
+          "[\"uv\",\"tool\",\"run\",\"mypy\"]"
+        ],
         "evenBetterToml.formatter.columnWidth": 1,
         "evenBetterToml.formatter.arrayAutoCollapse": true,
-        "cody.experimental.commitMessage": true,
-        "cody.chat.preInstruction": "Answer alwayas in Japanese",
+        "github.copilot.chat.commitMessageGeneration.instructions": [
+          {
+            "text": "日本語で頼む。簡潔に書いて欲しいが、変更点は漏らさず書いて欲しい。箇条書きスタイルで書いてください。最初の一行はfeatureの追加やバグ修正の概要を書いてください。"
+          }
+        ],
       },
       "extensions": [
         "amazonwebservices.aws-toolkit-vscode",

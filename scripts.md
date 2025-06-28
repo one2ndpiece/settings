@@ -12,6 +12,11 @@ sudo mount -t drvfs 'C:\Users\戸波勇人\Box' /mnt/box
 ```
 
 # AWS
+## EC2
+###Windowsインスタンスのキーを取得
+```
+aws ec2 get-password-data --instance-id i-0d9c8ebed1961dfd9 --priv-launch-key /root/.ssh/logi-test-key-2.pem
+```
 ## sam
 ### sam local invokeに必要なオプション
 ```
@@ -271,6 +276,10 @@ gh auth login
 gh config set editor "cursor --wait"
 
 ```
+### secretを設定
+```
+gh secret set TOKEN_JSON --repo <owner>/<repo> < data/token.json
+```
 # ngrok
 ここに全部書いてある
 https://dashboard.ngrok.com/get-started/setup/linux
@@ -449,3 +458,5 @@ apt update && apt install -y \
   libxtst6 ca-certificates fonts-liberation libappindicator1 \
   libnss3 lsb-release xdg-utils wget
 ```
+# Go
+調べて
