@@ -49,6 +49,17 @@
             "text": "日本語で頼む。簡潔に書いて欲しいが、変更点は漏らさず書いて欲しい。箇条書きスタイルで書いてください。最初の一行はfeatureの追加やバグ修正の概要を書いてください。"
           }
         ],
+        "todo-tree.general.tags": [
+          "BUG",
+          "HACK",
+          "FIXME",
+          "TODO",
+          "XXX",
+          "[ ]",
+          "[x]",
+          "BM:"
+        ],
+        "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|'|%%|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)"
       },
       "extensions": [
         "amazonwebservices.aws-toolkit-vscode",
