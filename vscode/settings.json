@@ -1,3 +1,9 @@
 {
-  "biome.lspBin": "/workspace/joor/aws-backend/lambdas/ts/joorhub-lambda/node_modules/@biomejs/cli-linux-x64/biome"
+  "biome.lspBin": "/workspace/joor/aws-backend/lambdas/ts/joorhub-lambda/node_modules/@biomejs/cli-linux-x64/biome",
+  "markdown.preview.scrollPreviewWithEditor": false,
+  "markdown.preview.scrollEditorWithPreview": false,
+  "workbench.colorCustomizations": {
+    "editor.selectionBackground": "#c4c4c4"
+  },
+  "workbench.colorTheme": "Solarized Light",
 }
