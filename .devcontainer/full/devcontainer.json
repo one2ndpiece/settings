@@ -63,7 +63,7 @@
       },
       "extensions": [
         "amazonwebservices.aws-toolkit-vscode",
-        "bierner.markdown-mermaid",
+        "MermaidChart.vscode-mermaid-chart",
         "charliermarsh.ruff",
         "grapecity.gc-excelviewer",
         "gruntfuggly.todo-tree",
