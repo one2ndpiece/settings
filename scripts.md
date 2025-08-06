@@ -458,5 +458,3 @@ apt update && apt install -y \
   libxtst6 ca-certificates fonts-liberation libappindicator1 \
   libnss3 lsb-release xdg-utils wget
 ```
-# Go
-調べて
