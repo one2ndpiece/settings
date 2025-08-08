@@ -63,6 +63,7 @@
       },
       "extensions": [
         "amazonwebservices.aws-toolkit-vscode",
+        "christian-kohler.path-intellisense",
         "MermaidChart.vscode-mermaid-chart",
         "charliermarsh.ruff",
         "grapecity.gc-excelviewer",
@@ -100,7 +101,8 @@
     }
   },
   "features": {
-    "ghcr.io/devcontainers/features/docker-from-docker:1": {}
+    "ghcr.io/devcontainers/features/docker-from-docker:1": {},
+    "ghcr.io/devcontainers/features/aws-cli:1": {}
   },
   "runArgs": [
     "--add-host=host.docker.internal:host-gateway"
