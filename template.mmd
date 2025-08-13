@@ -1,0 +1,17 @@
+---
+config:
+    look: handDrawn
+    theme: forest
+    layout: elk
+    elk:
+        mergeEdges: true
+        nodePlacementStrategy: LINEAR_SEGMENTS
+---
+graph LR
+A1-->|a|B1 & C1
+subgraph sub1
+    direction LR
+        A[Start] --> B{Choose Path}
+        B -->|Option 1| C[Path 1]
+        B -->|Option 2| D[Path 2]
+end
