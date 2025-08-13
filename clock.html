@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>アナログ時計（秒針あり）</title>
+    <style>
+        :root {
+            --size: 420px;
+            --bg: radial-gradient(circle at 50% 40%, #f7f7fb 0%, #e9ecf3 60%, #dfe3ec 100%);
+            --tick: #7a8193;
+            --hand: #222;
+            --second: #d33;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: #f3f5fa;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", "YuGothic", Meiryo, sans-serif
+        }
+
+        .wrap {
+            min-height: 100%;
+            display: grid;
+            place-items: center;
+            padding: 2rem 1rem
+        }
+
+        .clock {
+            position: relative;
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            background: var(--bg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .15);
+            border: 10px solid #fff
+        }
+
+        .center-cap {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin: -8px 0 0 -8px;
+            background: #222;
+            border-radius: 50%;
+            z-index: 10
+        }
+
+        .hand {
+            position: absolute;
+            left: 50%;
+            bottom: 50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotate(90deg);
+            border-radius: 12px
+        }
+
+        .hand.hour {
+            width: 8px;
+            height: calc(var(--size)*.28);
+            background: var(--hand)
+        }
+
+        .hand.minute {
+            width: 6px;
+            height: calc(var(--size)*.36);
+            background: var(--hand)
+        }
+
+        .hand.second {
+            width: 3px;
+            height: calc(var(--size)*.42);
+            background: #d33
+        }
+
+        .ticks,
+        .numbers {
+            position: absolute;
+            inset: 0
+        }
+
+        .tick {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 12px;
+            background: #7a8193;
+            transform-origin: 50% calc(var(--size)/2);
+            opacity: .55
+        }
+
+        .tick.major {
+            height: 18px;
+            width: 3px;
+            opacity: .85
+        }
+
+        .number {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 700;
+            color: #2a2f3a
+        }
+
+        .digital {
+            margin-top: 1rem;
+            font-size: 1.15rem;
+            text-align: center
+        }
+
+        .controls {
+            margin-top: .5rem;
+            text-align: center;
+            font-size: .9rem
+        }
+
+        button {
+            border: 0;
+            padding: .5rem .8rem;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            cursor: pointer;
+            margin: 0 .25rem
+        }
+
+        @media (max-width:480px) {
+            :root {
+                --size: 320px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="clock" aria-label="アナログ時計">
+            <div class="ticks" aria-hidden="true"></div>
+            <div class="numbers" aria-hidden="true"></div>
+            <div class="hand hour" id="hour"></div>
+            <div class="hand minute" id="minute"></div>
+            <div class="hand second" id="second"></div>
+            <div class="center-cap"></div>
+        </div>
+        <div class="digital" id="digital"></div>
+        <div class="controls">
+            <button id="fs">全画面</button>
+            <button id="resizeUp">大きく</button>
+            <button id="resizeDown">小さく</button>
+        </div>
+    </div>
+    <script>
+        const ticksEl = document.querySelector('.ticks'); const numsEl = document.querySelector('.numbers');
+        for (let i = 0; i < 60; i++) { const t = document.createElement('div'); t.className = 'tick' + (i % 5 === 0 ? ' major' : ''); t.style.transform = `rotate(${i * 6}deg) translateY(6px)`; ticksEl.appendChild(t); }
+        for (let n = 1; n <= 12; n++) { const el = document.createElement('div'); el.className = 'number'; const angle = (n % 12) * 30; const r = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--size')) * 0.38; const rad = (angle - 90) * Math.PI / 180; el.style.left = `calc(50% + ${r * Math.cos(rad)}px)`; el.style.top = `calc(50% + ${r * Math.sin(rad)}px)`; el.style.fontSize = 'clamp(14px,2.8vmin,18px)'; el.textContent = n; numsEl.appendChild(el); }
+        const hourEl = document.getElementById('hour'), minEl = document.getElementById('minute'), secEl = document.getElementById('second'), digitalEl = document.getElementById('digital');
+        function update() {
+            const now = new Date(); const ms = now.getMilliseconds(); const s = now.getSeconds() + ms / 1000; const m = now.getMinutes() + s / 60; const h = (now.getHours() % 12) + m / 60;
+            hourEl.style.transform = `translateX(-50%) rotate(${h * 30}deg)`; minEl.style.transform = `translateX(-50%) rotate(${m * 6}deg)`; secEl.style.transform = `translateX(-50%) rotate(${s * 6}deg)`;
+            const pad = n => n.toString().padStart(2, '0'); digitalEl.textContent = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}  ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+            requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+        document.getElementById('fs').addEventListener('click', () => { const el = document.documentElement; if (!document.fullscreenElement) { el.requestFullscreen?.(); } else { document.exitFullscreen?.(); } });
+        function adjustSize(delta) { const cs = getComputedStyle(document.documentElement).getPropertyValue('--size').trim(); const val = parseFloat(cs); document.documentElement.style.setProperty('--size', (val + delta) + 'px'); }
+        document.getElementById('resizeUp').addEventListener('click', () => adjustSize(40));
+        document.getElementById('resizeDown').addEventListener('click', () => adjustSize(-40));
+    </script>
+</body>
+
+</html>
