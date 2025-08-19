@@ -26,7 +26,6 @@
         },
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff",
-          "editor.formatOnType": true
         },
         "editor.formatOnType": true,
         "editor.formatOnSave": true,
@@ -96,7 +95,8 @@
         "xshrim.txt-syntax",
         "yzane.markdown-pdf",
         "yzhang.markdown-all-in-one",
-        "bradlc.vscode-tailwindcss"
+        "bradlc.vscode-tailwindcss",
+        "redhat.vscode-xml"
       ]
     }
   },
