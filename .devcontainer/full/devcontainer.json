@@ -96,7 +96,9 @@
         "yzane.markdown-pdf",
         "yzhang.markdown-all-in-one",
         "bradlc.vscode-tailwindcss",
-        "redhat.vscode-xml"
+        "redhat.vscode-xml",
+        "tamasfe.even-better-toml",
+        "redhat.vscode-yaml"
       ]
     }
   },
