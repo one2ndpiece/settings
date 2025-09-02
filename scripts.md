@@ -266,7 +266,10 @@ Host github.com-one2ndpiece
 ```
 git remote set-url origin git@yttnm:yttnm/universal-hub.git
 ```
-
+権限が足りない時
+```
+chmod 600 ~/.ssh/id_ed25519_one2ndpiece
+```
 ## gh
 ```
 gh auth login
