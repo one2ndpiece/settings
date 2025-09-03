@@ -29,7 +29,7 @@
         },
         "editor.formatOnType": true,
         "editor.formatOnSave": true,
-        "python.analysis.typeCheckingMode": "strict",
+        "python.analysis.typeCheckingMode": "basic",
         "python.analysis.autoImportCompletions": true,
         "ruff.interpreter": [
           "/bin/python3"
