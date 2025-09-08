@@ -37,5 +37,15 @@
         "key": "enter",
         "command": "-workbench.action.edits.submit",
         "when": "inChatInput && chatMode != 'ask'"
+    },
+    {
+        "key": "ctrl+enter",
+        "command": "workbench.action.chat.submit",
+        "when": "inChatInput"
+    },
+    {
+        "key": "enter",
+        "command": "-workbench.action.chat.submit",
+        "when": "inChatInput"
     }
 ]
