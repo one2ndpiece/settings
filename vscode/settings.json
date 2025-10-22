@@ -6,19 +6,68 @@
     "editor.selectionBackground": "#c4c4c4"
   },
   "workbench.colorTheme": "Solarized Light",
-  "[typescript]": {
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit",
-      "source.fixAll.biome": "explicit"
-    }
-  },
   "[jupyter]": {
-    "editor.defaultFormatter": "charliermarsh.ruff"
+    "editor.defaultFormatter": "charliermarsh.ruff",
   },
   "notebook.formatOnSave.enabled": true,
   "notebook.codeActionsOnSave": {
     "notebook.source.fixAll.ruff": "explicit",
     "notebook.source.organizeImports.ruff": "explicit"
   },
-  "notebook.lineNumbers": "on"
+  "notebook.lineNumbers": "on",
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.biome": "explicit",
+      "source.fixAll.biome": "explicit"
+    },
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnType": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit"
+    },
+  },
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportMissingImports": "error",
+    "reportMissingModuleSource": "warning"
+  },
+  "python.defaultInterpreterPath": ".venv/bin/python3",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "mypy-type-checker.path": [
+    "[\"uv\",\"tool\",\"run\",\"mypy\"]"
+  ],
+  "ruff.interpreter": [
+    "/bin/python3"
+  ],
+  "explorer.sortOrder": "type",
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.ruff": "explicit"
+  },
+  "evenBetterToml.formatter.columnWidth": 1,
+  "evenBetterToml.formatter.arrayAutoCollapse": true,
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "日本語で頼む。簡潔に書いて欲しいが、変更点は漏らさず書いて欲しい。箇条書きスタイルで書いてください。最初の一行はfeatureの追加やバグ修正の概要を書いてください。"
+    }
+  ],
+  "todo-tree.general.tags": [
+    "BUG",
+    "HACK",
+    "FIXME",
+    "TODO",
+    "XXX",
+    "[ ]",
+    "[x]",
+    "BM:"
+  ],
+  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|'|%%|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)"
 }

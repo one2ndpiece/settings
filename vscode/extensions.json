@@ -1,33 +1,5 @@
 {
-  "name": "full",
-  // dockerイメージ
-  "build": {
-    "context": ".",
-    "dockerfile": "Dockerfile"
-  },
-  "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind,consistency=cached",
-  "workspaceFolder": "${localWorkspaceFolder}",
-  "mounts": [
-    {
-      "source": "SOURCE_DIR",
-      "target": "TARGET_DIR",
-      "type": "bind"
-    }
-  ],
-  "remoteUser": "root",
-  "customizations": {
-    "vscode": {
-      "settings": {
-        // 細かい設定は.vscode/settings.jsonに記載
-        "workbench.colorCustomizations": {
-          "titleBar.activeBackground": "#19549C",
-          "titleBar.activeForeground": "#ffffff",
-          "activityBar.background": "#02A7E3",
-          "activityBar.foreground": "#ffffff"
-        }
-      },
-      // .vscode/extensions.jsonに書いた方がいいかも？
-      "extensions": [
+    "recommendations": [
         "amazonwebservices.aws-toolkit-vscode",
         "christian-kohler.path-intellisense",
         "MermaidChart.vscode-mermaid-chart",
@@ -66,15 +38,5 @@
         "redhat.vscode-xml",
         "tamasfe.even-better-toml",
         "redhat.vscode-yaml"
-      ]
-    }
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/docker-from-docker:1": {},
-    "ghcr.io/devcontainers/features/aws-cli:1": {}
-  },
-  "runArgs": [
-    "--add-host=host.docker.internal:host-gateway"
-  ],
-  "postCreateCommand": "bash -lc 'set -e;cp -r /OneDrive/.ssh /root && chmod 600 /root/.ssh/id_*'"
+    ]
 }

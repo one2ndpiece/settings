@@ -47,5 +47,20 @@
         "key": "enter",
         "command": "-workbench.action.chat.submit",
         "when": "inChatInput"
+    },
+    {
+        "key": "ctrl+u",
+        "command": "-cursorUndo",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+enter",
+        "command": "workbench.action.chat.submit",
+        "when": "inChatInput && !withinEditSessionDiff"
+    },
+    {
+        "key": "enter",
+        "command": "-workbench.action.chat.submit",
+        "when": "inChatInput && !withinEditSessionDiff"
     }
 ]
