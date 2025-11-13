@@ -4,3 +4,4 @@ summary.md
 custom.zsh
 **/do-not-commit/
 *.code-workspace
+.venv/
