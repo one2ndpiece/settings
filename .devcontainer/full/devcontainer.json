@@ -77,7 +77,6 @@
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers/features/java:1": {},
     "ghcr.io/devcontainers/features/ruby:1": {},
-    "ghcr.io/devcontainers/features/git-lfs:1": {},
     "ghcr.io/devcontainers/features/dotnet:2": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
