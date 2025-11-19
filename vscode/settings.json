@@ -1,5 +1,5 @@
 {
-  "biome.lsp.bin": "/workspace/joor/aws-backend/lambdas/ts/joorhub-lambda/node_modules/@biomejs/cli-linux-x64/biome",
+  "biome.lsp.bin": "**/node_modules/@biomejs/cli-linux-x64/biome",
   "markdown.preview.scrollPreviewWithEditor": false,
   "markdown.preview.scrollEditorWithPreview": false,
   "workbench.colorCustomizations": {
