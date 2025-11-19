@@ -17,7 +17,9 @@ RUN git config --global user.email "dummy@dummy.com" &&\
 RUN apt-get update &&\
     DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata &&\
     ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-
+# -----------------------------------------------------
+# rustのインストール
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # -----------------------------------------------------
 RUN git clone https://github.com/one2ndpiece/settings.git /opt/settings &&\
     /opt/settings/dotfiles/install/install-all.sh
