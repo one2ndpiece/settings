@@ -21,5 +21,10 @@ RUN apt-get update &&\
 # rustのインストール
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # -----------------------------------------------------
+RUN curl -L https://github.com/99designs/aws-vault/releases/latest/download/aws-vault-linux-amd64 -o aws-vault &&\
+    chmod +x aws-vault &&\
+    mv aws-vault /usr/local/bin/
+
+# -----------------------------------------------------
 RUN git clone https://github.com/one2ndpiece/settings.git /opt/settings &&\
     /opt/settings/dotfiles/install/install-all.sh
