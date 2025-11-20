@@ -13,7 +13,7 @@ virtualenv_prompt() {
     fi
 }
 
-AWS_PROFILEの表示関数
+# AWS_PROFILEの表示関数
 aws_profile_prompt() {
     if [[ -n "$AWS_VAULT" ]]; then
         echo "(aws-vault:$AWS_VAULT)"
