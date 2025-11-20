@@ -1,5 +1,3 @@
-#---------------------------------------------
-
 # PROMPT_SUBST を有効にして、PROMPT 内のコマンド置換を毎回実行する
 setopt PROMPT_SUBST
 # 1. カスタム1段目のための関数群
@@ -15,18 +13,19 @@ virtualenv_prompt() {
     fi
 }
 
-# AWS_PROFILEの表示関数
-# aws_profile_prompt() {
-#     if [[ -n "$AWS_PROFILE" ]]; then
-#         echo "(profile:$AWS_PROFILE)"
-#     fi
-# }
+AWS_PROFILEの表示関数
+aws_profile_prompt() {
+    if [[ -n "$AWS_VAULT" ]]; then
+        echo "(aws-vault:$AWS_VAULT)"
+    else
+        echo ""
+    fi
+}
 
 _1st_line() {
     local venv=$(virtualenv_prompt)
-    # local aws_profile=$(aws_profile_prompt)
-    # local text="\n${venv}${aws_profile}($PWD)($(TZ=JST-9 date '+%Y-%m-%d %H:%M:%S'))"
-    local text="\n${venv}($PWD)($(TZ=JST-9 date '+%Y-%m-%d %H:%M:%S'))"
+    local aws_profile=$(aws_profile_prompt)
+    local text="\n${venv}($PWD)($(TZ=JST-9 date '+%Y-%m-%d %H:%M:%S'))${aws_profile}"
     echo "${text}"
 }
 
@@ -37,10 +36,6 @@ _print_first_line() {
 
 # precmd_functions 配列に追加して、毎回プロンプト前に実行させる
 precmd_functions+=( _print_first_line )
-
-
-# 2. 2段目は oh‑my‑zsh のデフォルト設定に任せるため、
-# ここでは PROMPT の設定は行わず、テーマ（例: robbyrussell など）が定義する内容がそのまま利用されます。
 
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
