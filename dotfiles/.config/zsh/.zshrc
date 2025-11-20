@@ -37,5 +37,7 @@ autoload -Uz +X bashcompinit && bashcompinit
 if [ -f "/etc/bash_completion.d/azure-cli" ]; then
     source /etc/bash_completion.d/azure-cli
 fi
-
+#---------------------------------------------
+# aws-vault の設定
+export AWS_VAULT_BACKEND=file
 #----------------ここまでがclone----------------
