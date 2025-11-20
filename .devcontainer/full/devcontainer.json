@@ -28,7 +28,6 @@
       },
       // .vscode/extensions.jsonに書いた方がいいかも？
       "extensions": [
-        "amazonwebservices.aws-toolkit-vscode",
         "christian-kohler.path-intellisense",
         "MermaidChart.vscode-mermaid-chart",
         "charliermarsh.ruff",
