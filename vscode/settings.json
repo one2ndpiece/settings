@@ -70,5 +70,6 @@
     "BM:"
   ],
   "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|'|%%|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
-  "mermaid.vscode.maxZoom": 10
+  "mermaid.vscode.maxZoom": 10,
+  "git.blame.editorDecoration.enabled": false,
 }
