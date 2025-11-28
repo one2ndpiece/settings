@@ -1,9 +1,5 @@
 #!/bin/bash
 DOTFILES="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" >/dev/null 2>&1 && pwd )"
-
-#---------------------------------------------
-# zshのインストール
-apt update && apt install -y zsh
 #---------------------------------------------
 ln -sf $DOTFILES/.zshenv $HOME/.zshenv && . $HOME/.zshenv
 #---------------------------------------------
