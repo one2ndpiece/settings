@@ -1,32 +1,4 @@
 #---------------------------------------------
-aws_profile() {
-    # unset（または -u, --unset ）の場合は解除する
-    if [[ "$1" == "unset" || "$1" == "-u" || "$1" == "--unset" ]]; then
-        unset AWS_PROFILE
-        echo "AWS_PROFILE has been unset."
-        return 0
-    fi
-
-    # 引数がなければ使用法を表示
-    if [[ -z "$1" || "$1" == "--help" || "$1" == "-h" ]]; then
-        echo "Usage: aws_profile <profile> | aws_profile unset"
-        return 1
-    fi
-
-    local profile="$1"
-
-    # ~/.aws/credentials に該当プロファイルが存在するかチェック
-    if ! grep -q "^\[$profile\]" ~/.aws/credentials 2>/dev/null; then
-        echo "Error: Profile '$profile' not found in ~/.aws/credentials"
-        return 1
-    fi
-
-    export AWS_PROFILE="$profile"
-    echo "AWS_PROFILE is now set to '$AWS_PROFILE'"
-    # オプション: 現在の認証情報を表示する
-    aws sts get-caller-identity --output table |cat
-}
-#---------------------------------------------
 # 一時ファイルを作成する
 scf() {
     # スクリプト保存ディレクトリを定義
