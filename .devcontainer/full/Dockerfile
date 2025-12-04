@@ -11,6 +11,7 @@ RUN mkdir -p workspace/ && chmod -R +x workspace/
 RUN git config --global user.email "dummy@dummy.com" &&\
     git config --global user.name "dummy" &&\
     git config --global core.quotepath false &&\
+    git config --global credential.helper cache &&\
     git lfs install
 # -----------------------------------------------------
 # 日本時間の設定
