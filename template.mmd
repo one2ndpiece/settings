@@ -5,10 +5,11 @@ config:
     layout: elk
     elk:
         mergeEdges: true
-            
+        nodePlacementStrategy: LINEAR_SEGMENTS
     flowchart:
         curve: linear
 ---
+%% LINEAR_SEGMENTS,NETWORK_SIMPLEX,SIMPLE,BRANDES_KOEPF
 graph LR
 A1-->|a|B1 & C1
 subgraph sub1
