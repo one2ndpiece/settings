@@ -13,6 +13,10 @@ members = [
 
 ]
 
+# メンバー用
+# [tool.ruff]
+# extend = "../../pyproject.toml"
+
 [tool.ruff]
 line-length = 100
 
