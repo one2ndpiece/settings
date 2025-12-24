@@ -1,5 +1,5 @@
 # Dockerfile
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 SHELL ["/bin/bash", "-c"]
 # 必要なパッケージのインストールや設定をここに追加
 RUN apt update && apt install -y less language-pack-ja-base language-pack-ja zip curl jq groff git tmux entr tree lsof build-essential iproute2 git-lfs xdg-utils zsh
