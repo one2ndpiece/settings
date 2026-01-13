@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-c"]
 # 必要なパッケージのインストールや設定をここに追加
 RUN apt update && \
     apt install -y less language-pack-ja-base language-pack-ja zip curl jq groff \
-    git tmux entr tree lsof build-essential iproute2 git-lfs xdg-utils zsh just fzf
+    git tmux entr tree lsof build-essential iproute2 git-lfs xdg-utils zsh fzf
 
 # workspaceディレクトリを作成して権限を設定
 RUN mkdir -p workspace/ && chmod -R +x workspace/
@@ -32,4 +32,5 @@ RUN curl -L https://github.com/99designs/aws-vault/releases/latest/download/aws-
 RUN git clone https://github.com/one2ndpiece/settings.git /opt/settings &&\
     /opt/settings/dotfiles/install/install-all.sh
 # -----------------------------------------------------
+# mise用
 ENV PATH="/root/.local/share/mise/shims:${PATH}"
