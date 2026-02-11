@@ -10,7 +10,7 @@ RUN apt update && \
 RUN mkdir -p workspace/ && chmod -R +x workspace/
 # -----------------------------------------------------
 # gitの設定
-RUN     git config --global core.quotepath false &&\
+RUN git config --global core.quotepath false &&\
     git config --global credential.helper 'cache --timeout=86400' &&\
     git lfs install
 # -----------------------------------------------------
