@@ -1,5 +1,5 @@
 {
-  "name": "full",
+  "name": "template",
   // dockerイメージ
   "build": {
     "context": ".",
