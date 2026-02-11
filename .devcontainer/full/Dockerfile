@@ -10,9 +10,7 @@ RUN apt update && \
 RUN mkdir -p workspace/ && chmod -R +x workspace/
 # -----------------------------------------------------
 # gitの設定
-RUN git config --global user.email "dummy@dummy.com" &&\
-    git config --global user.name "dummy" &&\
-    git config --global core.quotepath false &&\
+RUN     git config --global core.quotepath false &&\
     git config --global credential.helper 'cache --timeout=86400' &&\
     git lfs install
 # -----------------------------------------------------
@@ -29,8 +27,13 @@ RUN curl -L https://github.com/99designs/aws-vault/releases/latest/download/aws-
     chmod +x aws-vault &&\
     mv aws-vault /usr/local/bin/
 # -----------------------------------------------------
-RUN git clone https://github.com/one2ndpiece/settings.git /opt/settings &&\
-    /opt/settings/dotfiles/install/install-all.sh
+# 個人的な設定（personal-setup.shが存在する場合のみ実行）
+COPY personal-setup.sh* /tmp/
+RUN if [ -f /tmp/personal-setup.sh ]; then \
+    chmod +x /tmp/personal-setup.sh && \
+    /tmp/personal-setup.sh && \
+    rm /tmp/personal-setup.sh; \
+    fi
 # -----------------------------------------------------
 # mise用
 ENV PATH="/root/.local/share/mise/shims:${PATH}"

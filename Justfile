@@ -1,6 +1,15 @@
-mod script 'scripts/justfile/sample.just'
+set dotenv-load
+
+mod sample 'scripts/justfile/sample.just'
 # list
 default:
   just --list
-gitsetup:
-  git config --global credential.helper 'cache --timeout=86400'
+
+[arg("email",long="email",short="e")]
+[arg("name",long="name",short="n")]
+init email="$EMAIL" name="$NAME":
+  git config --global user.email {{email}}
+  git config --global user.name {{name}}
+  @echo "=== Git Configuration ==="
+  @git config --global user.email
+  @git config --global user.name
