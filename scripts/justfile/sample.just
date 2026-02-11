@@ -1,4 +1,4 @@
-JUST_PATH := "../"
+JUST_PATH := "../../"
 set working-directory := JUST_PATH
 
 SAMPLE := "this is a sample justfile"
