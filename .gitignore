@@ -2,6 +2,6 @@
 mugicha.toml
 summary.md
 custom.zsh
-**/do-not-commit/
+.devcontainer/do-not-commit/
 .venv/
 .env
