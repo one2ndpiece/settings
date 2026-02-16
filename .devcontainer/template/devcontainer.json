@@ -68,5 +68,5 @@
   "runArgs": [
     "--add-host=host.docker.internal:host-gateway"
   ],
-  "postCreateCommand": "bash -lc 'set -e;cp -r /OneDrive/.ssh /root && chmod 600 /root/.ssh/id_*' && npm i -g rust-just"
+  "postCreateCommand": "bash -lc 'set -e;cp -r /opt/.ssh /root && chmod 600 /root/.ssh/id_*' && npm i -g rust-just"
 }
