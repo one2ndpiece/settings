@@ -8,12 +8,61 @@
 		"editor.formatOnSave": true,
 		"editor.formatOnType": true,
 		"editor.tabSize": 2,
-		"[python]": {
-			"editor.tabSize": 4
-		},
+		"explorer.sortOrder": "type",
 		"files.associations": {
 			"Justfile": "shellscript",
 			"*.just": "shellscript"
-		}
+		},
+		"workbench.tree.expandMode": "doubleClick",
+		"biome.lsp.bin": "${workspaceFolder}/node_modules/@biomejs/cli-linux-x64/biome",
+		"markdown.preview.scrollPreviewWithEditor": false,
+		"markdown.preview.scrollEditorWithPreview": false,
+		"[jupyter]": {
+			"editor.defaultFormatter": "charliermarsh.ruff",
+		},
+		"notebook.formatOnSave.enabled": true,
+		"notebook.codeActionsOnSave": {
+			"notebook.source.fixAll.ruff": "explicit",
+			"notebook.source.organizeImports.ruff": "explicit"
+		},
+		"notebook.lineNumbers": "on",
+		"[typescript]": {
+			"editor.codeActionsOnSave": {
+				"source.organizeImports.biome": "explicit",
+				"source.fixAll.biome": "explicit"
+			},
+			"editor.defaultFormatter": "biomejs.biome"
+		},
+		"[json]": {
+			"editor.defaultFormatter": "biomejs.biome"
+		},
+		"[python]": {
+			"editor.tabSize": 4,
+			"editor.defaultFormatter": "charliermarsh.ruff",
+			"editor.formatOnType": true,
+			"editor.codeActionsOnSave": {
+				"source.fixAll.ruff": "explicit"
+			},
+		},
+		"python.analysis.diagnosticSeverityOverrides": {
+			"reportMissingImports": "error",
+			"reportMissingModuleSource": "warning"
+		},
+		"python.defaultInterpreterPath": ".venv/bin/python3",
+		"python.analysis.typeCheckingMode": "basic",
+		"python.analysis.autoImportCompletions": true,
+		"ruff.interpreter": [
+			"${workspaceFolder}/.venv/bin/python3",
+		],
+		"evenBetterToml.formatter.columnWidth": 1,
+		"evenBetterToml.formatter.arrayAutoCollapse": true,
+		"github.copilot.chat.commitMessageGeneration.instructions": [
+			{
+				"text": "日本語で頼む。簡潔に書いて欲しいが、変更点は漏らさず書いて欲しい。箇条書きスタイルで書いてください。最初の一行はfeatureの追加やバグ修正の概要を書いてください。"
+			}
+		],
+		"mermaid.vscode.maxZoom": 10,
+		"git.blame.editorDecoration.enabled": false,
+		"chatgpt.composerEnterBehavior": "cmdIfMultiline",
 	}
 }
