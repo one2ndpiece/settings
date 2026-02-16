@@ -72,4 +72,6 @@
   "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|'|%%|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
   "mermaid.vscode.maxZoom": 10,
   "git.blame.editorDecoration.enabled": false,
+  "chatgpt.composerEnterBehavior": "cmdIfMultiline",
+  "workbench.tree.expandMode": "doubleClick"
 }
