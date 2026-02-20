@@ -20,11 +20,11 @@
       "settings": {
         // 細かい設定は.vscode/settings.jsonに記載
         "workbench.colorCustomizations": {
-          "titleBar.activeBackground": "#19549C",
+          "titleBar.activeBackground": "#4598ff",
           "titleBar.activeForeground": "#ffffff",
-          "activityBar.background": "#02A7E3",
+          "activityBar.background": "#27bff767",
           "activityBar.foreground": "#ffffff"
-        }
+        },
       },
       // .vscode/extensions.jsonに書いた方がいいかも？
       "extensions": [
