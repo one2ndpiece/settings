@@ -40,4 +40,6 @@ fi
 #---------------------------------------------
 # aws-vault の設定
 export AWS_VAULT_BACKEND=file
+#---------------------------------------------
+export VSCODE_IPC_HOOK_CLI=$(ls -t /run/user/$(id -u)/vscode-ipc-*.sock 2>/dev/null | head -1)
 #----------------ここまでがclone----------------
