@@ -40,15 +40,5 @@ fi
 #---------------------------------------------
 # aws-vault の設定
 export AWS_VAULT_BACKEND=file
-#---------------------------------------------
-# VS Code terminal では IPC ソケットの場所が環境によって異なる
-typeset -a _vscode_ipc_candidates
-_vscode_ipc_candidates=(
-    /run/user/$(id -u)/vscode-ipc-*.sock(Nom[1])
-    /tmp/user/$(id -u)/vscode-ipc-*.sock(Nom[1])
-)
-if [[ -n "${_vscode_ipc_candidates[1]}" ]]; then
-    export VSCODE_IPC_HOOK_CLI="${_vscode_ipc_candidates[1]}"
-fi
-unset _vscode_ipc_candidates
+
 #----------------ここまでがclone----------------
