@@ -14,6 +14,7 @@ init email="$EMAIL" name="$NAME":
   @echo "=== Git Configuration ==="
   @git config --global user.email
   @git config --global user.name
+  @git config --global --add safe.directory /workspace/settings
 # boxをマウント(wslで実行)
 box-mount:
   sudo mount -t drvfs 'C:\Users\戸波勇人\Box' /mnt/box
