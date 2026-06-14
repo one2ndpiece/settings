@@ -14,8 +14,6 @@ alias aic='aicommit2 --locale 'jp' --generate 3'
 # プロンプトの設定
 source "$HOME/.config/zsh/prompt.zsh"
 #---------------------------------------------
-source "$HOME/.config/zsh/scripts.zsh"
-#---------------------------------------------
 source "$HOME/.config/zsh/custom.zsh"
 #---------------------------------------------
 # 履歴をファイルに追記する（セッション終了時に上書きせず、既存の履歴に加える）

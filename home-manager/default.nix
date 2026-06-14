@@ -7,8 +7,6 @@
 
 let
   cfg = config.one2ndpiece;
-  promptConfig = builtins.readFile ../dotfiles/.config/zsh/prompt.zsh;
-  scriptsConfig = builtins.readFile ../dotfiles/.config/zsh/scripts.zsh;
 in
 {
   options.one2ndpiece = {
@@ -68,8 +66,39 @@ in
       };
 
       initContent = lib.mkAfter ''
-        ${promptConfig}
-        ${scriptsConfig}
+        setopt PROMPT_SUBST
+
+        virtualenv_prompt() {
+          if [[ -n "$VIRTUAL_ENV" ]]; then
+            local venv_name
+            venv_name=$(basename "$VIRTUAL_ENV")
+            local py_version
+            py_version=$("$VIRTUAL_ENV/bin/python" --version 2>&1 | awk '{print $2}')
+            echo "($venv_name:$py_version)"
+          fi
+        }
+
+        aws_profile_prompt() {
+          if [[ -n "$AWS_VAULT" ]]; then
+            echo "(aws-vault:$AWS_VAULT)"
+          else
+            echo ""
+          fi
+        }
+
+        _1st_line() {
+          local venv=$(virtualenv_prompt)
+          local aws_profile=$(aws_profile_prompt)
+          local text="\n''${venv}($PWD)($(TZ=JST-9 date '+%Y-%m-%d %H:%M:%S'))''${aws_profile}"
+          echo "''${text}"
+        }
+
+        _print_first_line() {
+          echo "$(_1st_line)"
+        }
+
+        precmd_functions+=( _print_first_line )
+        export VIRTUAL_ENV_DISABLE_PROMPT=1
 
         if [[ -f "$HOME/.config/zsh/custom.zsh" ]]; then
           source "$HOME/.config/zsh/custom.zsh"
