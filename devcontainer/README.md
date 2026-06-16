@@ -13,6 +13,8 @@
 ghcr.io/one2ndpiece/nix-devcontainer:ubuntu-24.04
 ```
 
+このイメージはUbuntu 24.04、Nix、`ja_JP.UTF-8` localeを含む。
+
 このタグは週次で再ビルドし、最新の`ubuntu:24.04`とNixを取り込む。
 各プロジェクトへの反映は、Dev ContainerのRebuildを手動で実行する。
 

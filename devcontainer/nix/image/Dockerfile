@@ -15,10 +15,14 @@ RUN apt-get update \
         git \
         gnupg \
         dirmngr \
+        locales \
         tzdata \
         xz-utils \
     && ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo "${TZ}" > /etc/timezone \
+    && sed -i 's/^# *\(ja_JP.UTF-8 UTF-8\)/\1/' /etc/locale.gen \
+    && locale-gen ja_JP.UTF-8 \
+    && update-locale LANG=ja_JP.UTF-8 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN if [[ "${NIX_VERSION}" == "latest" ]]; then \
@@ -35,7 +39,8 @@ RUN printf '%s\n' \
       "sandbox = false" \
       >> /etc/nix/nix.conf
 
-ENV PATH="/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:${PATH}"
+ENV LANG=ja_JP.UTF-8 \
+    PATH="/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:${PATH}"
 
 RUN nix --version \
     && nix store info --store local

@@ -8,6 +8,8 @@ fi
 
 nix --version
 nix store info --store local
+locale -a | grep -qx "ja_JP.utf8"
+LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8 locale >/dev/null
 
 flake_dir="$(mktemp --directory)"
 trap 'rm -rf "${flake_dir}"' EXIT
