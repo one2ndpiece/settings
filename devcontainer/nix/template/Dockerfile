@@ -3,7 +3,6 @@ FROM ghcr.io/one2ndpiece/nix-devcontainer:ubuntu-24.04
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 COPY flake.nix flake.lock /opt/devcontainer/
-COPY home-manager/ /opt/devcontainer/home-manager/
 
 RUN cd /opt/devcontainer \
     && nix flake check --all-systems \

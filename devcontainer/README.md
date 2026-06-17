@@ -35,13 +35,22 @@ https://github.com/one2ndpiece/settings/pkgs/container/nix-devcontainer
 `nix-devcontainer`のvisibilityを`Public`へ変更する。初回workflowが完了するまで
 パッケージページと公開イメージは存在しない。
 
-プロジェクト固有のCLIや設定は、各プロジェクトの
-`home-manager/root-devcontainer.nix`へ追加する。
+プロジェクト固有のCLIやrootユーザー設定は、各プロジェクトのルートにある
+`flake.nix`へ追加する。テンプレートではHome Manager設定を`flake.nix`内へ
+inlineで定義している。
+
+Home Managerで追加したCLIはイメージビルド中に`/root/.nix-profile`へ
+インストールされ、`/root/.nix-profile/bin`が`PATH`へ入る。そのため、
+Rebuild後はコンテナ内のどのディレクトリでも通常のコマンドとして利用できる。
 
 新規プロジェクトでは`template/`の内容を配置する。`Dockerfile`、
 `devcontainer.json`、`devcontainer-lock.json`、`copy-ssh.sh`はプロジェクトの
-`.devcontainer/`へ置き、残りはリポジトリルートへ置く。最初のRebuild前に
-`nix flake lock`を実行して`flake.lock`を作成する。
+`.devcontainer/`へ置き、`flake.nix`はリポジトリルートへ置く。最初の
+Rebuild前に`nix flake lock`を実行して`flake.lock`を作成する。
+
+既存プロジェクトにすでに`flake.nix`がある場合は上書きしない。
+テンプレートの`inputs`、`homeConfigurations`、`packages`、`apps`、
+`formatter`を既存の`flake.nix`へ統合する。
 
 SSH鍵をコピーする場合は、ホスト側のSSHディレクトリを読み取り専用で
 `/opt/.ssh`へマウントする。マウントしない場合、`copy-ssh.sh`は何もせず終了する。
