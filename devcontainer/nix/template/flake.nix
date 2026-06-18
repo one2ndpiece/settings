@@ -72,7 +72,7 @@
                 home-manager.enable = true;
               };
 
-              one2ndpiece = {
+              userProfile = {
                 enable = true;
                 aws.enable = false;
                 azureCli.enable = false;

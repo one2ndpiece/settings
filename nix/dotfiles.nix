@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.one2ndpiece;
+  cfg = config.userProfile;
 in
 {
-  options.one2ndpiece = {
-    enable = lib.mkEnableOption "one2ndpiece shared development environment";
+  options.userProfile = {
+    enable = lib.mkEnableOption "shared dotfiles profile";
 
     aws.enable = lib.mkEnableOption "AWS-specific zsh integration";
     azureCli.enable = lib.mkEnableOption "Azure CLI bash completion in zsh";
