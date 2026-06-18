@@ -2,11 +2,7 @@ export ZSH="$ZDOTDIR/ohmyzsh"
 
 ZSH_THEME="robbyrussell"
 
-plugins=(git)
-
-if [[ -f "$HOME/.config/zsh/modules/aws.before.zsh" ]]; then
-    source "$HOME/.config/zsh/modules/aws.before.zsh"
-fi
+plugins=(git aws)
 
 if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
     source "$ZSH/oh-my-zsh.sh"
@@ -16,8 +12,9 @@ fi
 # プロンプトの設定
 source "$HOME/.config/zsh/prompt.zsh"
 #---------------------------------------------
-if [[ -f "$HOME/.config/zsh/modules/azure.zsh" ]]; then
-    source "$HOME/.config/zsh/modules/azure.zsh"
+if [[ -f /etc/bash_completion.d/azure-cli ]]; then
+    autoload -Uz +X bashcompinit && bashcompinit
+    source /etc/bash_completion.d/azure-cli
 fi
 #---------------------------------------------
 if command -v direnv >/dev/null 2>&1; then

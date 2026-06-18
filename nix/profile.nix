@@ -5,6 +5,7 @@
     pkgs.fzf
     pkgs.glibcLocales
     pkgs.neovim
+    pkgs.nixfmt
     pkgs.oh-my-zsh
     pkgs.tmux
     pkgs.zsh

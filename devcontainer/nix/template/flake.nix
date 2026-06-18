@@ -41,6 +41,7 @@
           modules = [
             settings.homeManagerModules.profile
             settings.homeManagerModules.dotfiles
+            settings.homeManagerModules.aws
             {
               home = {
                 username = "root";
@@ -73,10 +74,10 @@
                 home-manager.enable = true;
               };
 
+              aws.enable = false;
+
               dotfiles = {
-                aws.enable = false;
-                azureCli.enable = false;
-                clipboard.enable = false;
+                clipboard.enable = true;
               };
             }
           ];
