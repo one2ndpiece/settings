@@ -205,7 +205,6 @@ npm --version
 python --version
 which python
 pyenv versions
-aicommit2 --version
 cdk --version
 sam --version
 ```

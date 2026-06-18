@@ -15,6 +15,5 @@
   },
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.0": {}
-  },
-  "postStartCommand": "bash .devcontainer/copy-ssh.sh"
+  }
 }

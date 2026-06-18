@@ -14,7 +14,6 @@ in
 
     aws.enable = lib.mkEnableOption "AWS-specific zsh integration";
     azureCli.enable = lib.mkEnableOption "Azure CLI bash completion in zsh";
-    aicommit.enable = lib.mkEnableOption "the aicommit2 alias";
     clipboard.enable = lib.mkEnableOption "tmux clipboard integration through xclip";
   };
 
@@ -58,9 +57,6 @@ in
     }
     // lib.optionalAttrs cfg.azureCli.enable {
       "zsh/modules/azure.zsh".source = ../dotfiles/.config/zsh/modules/azure.zsh;
-    }
-    // lib.optionalAttrs cfg.aicommit.enable {
-      "zsh/modules/aicommit.zsh".source = ../dotfiles/.config/zsh/modules/aicommit.zsh;
     }
     // lib.optionalAttrs cfg.clipboard.enable {
       "tmux/clipboard-xclip.conf".source = ../dotfiles/.config/tmux/clipboard-xclip.conf;

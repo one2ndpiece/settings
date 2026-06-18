@@ -76,7 +76,6 @@
                 enable = true;
                 aws.enable = false;
                 azureCli.enable = false;
-                aicommit.enable = false;
                 clipboard.enable = false;
               };
             }

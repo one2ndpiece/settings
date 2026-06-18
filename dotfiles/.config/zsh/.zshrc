@@ -16,10 +16,6 @@ fi
 # プロンプトの設定
 source "$HOME/.config/zsh/prompt.zsh"
 #---------------------------------------------
-if [[ -f "$HOME/.config/zsh/modules/aicommit.zsh" ]]; then
-    source "$HOME/.config/zsh/modules/aicommit.zsh"
-fi
-#---------------------------------------------
 if [[ -f "$HOME/.config/zsh/modules/azure.zsh" ]]; then
     source "$HOME/.config/zsh/modules/azure.zsh"
 fi
