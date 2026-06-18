@@ -39,7 +39,8 @@
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            settings.homeManagerModules.default
+            settings.homeManagerModules.profile
+            settings.homeManagerModules.dotfiles
             {
               home = {
                 username = "root";
@@ -72,8 +73,7 @@
                 home-manager.enable = true;
               };
 
-              userProfile = {
-                enable = true;
+              dotfiles = {
                 aws.enable = false;
                 azureCli.enable = false;
                 clipboard.enable = false;

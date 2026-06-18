@@ -6,38 +6,21 @@
 }:
 
 let
-  cfg = config.userProfile;
+  cfg = config.dotfiles;
 in
 {
-  options.userProfile = {
-    enable = lib.mkEnableOption "shared dotfiles profile";
-
+  options.dotfiles = {
     aws.enable = lib.mkEnableOption "AWS-specific zsh integration";
     azureCli.enable = lib.mkEnableOption "Azure CLI bash completion in zsh";
     clipboard.enable = lib.mkEnableOption "tmux clipboard integration through xclip";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = {
     xdg.enable = true;
 
-    home.packages = [
-      pkgs.fzf
-      pkgs.glibcLocales
-      pkgs.neovim
-      pkgs.oh-my-zsh
-      pkgs.tmux
-      pkgs.zsh
-    ]
-    ++ lib.optional cfg.clipboard.enable pkgs.xclip;
+    home.packages = lib.optional cfg.clipboard.enable pkgs.xclip;
 
-    home.sessionVariables = {
-      EDITOR = "nvim";
-      LANG = "ja_JP.UTF-8";
-      LC_ALL = "ja_JP.UTF-8";
-      LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-      VISUAL = "nvim";
-    }
-    // lib.optionalAttrs cfg.aws.enable {
+    home.sessionVariables = lib.optionalAttrs cfg.aws.enable {
       AWS_VAULT_BACKEND = "file";
     };
 
@@ -60,11 +43,6 @@ in
     }
     // lib.optionalAttrs cfg.clipboard.enable {
       "tmux/clipboard-xclip.conf".source = ../dotfiles/.config/tmux/clipboard-xclip.conf;
-    };
-
-    programs.direnv = {
-      enable = true;
-      nix-direnv.enable = true;
     };
   };
 }

@@ -1,10 +1,10 @@
 {
   description = "one2ndpiece shared Nix outputs";
 
-  outputs = { self }: {
+  outputs = _: {
     homeManagerModules = {
-      default = import ./nix/dotfiles.nix;
-      personal = self.homeManagerModules.default;
+      dotfiles = import ./nix/dotfiles.nix;
+      profile = import ./nix/profile.nix;
     };
   };
 }
