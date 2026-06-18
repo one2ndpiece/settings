@@ -3,5 +3,3 @@
 !.devcontainer/Dockerfile
 !flake.nix
 !flake.lock
-!home-manager/
-!home-manager/**

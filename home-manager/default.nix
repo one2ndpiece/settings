@@ -24,121 +24,51 @@ in
     home.packages = [
       pkgs.fzf
       pkgs.glibcLocales
+      pkgs.neovim
+      pkgs.oh-my-zsh
+      pkgs.tmux
+      pkgs.zsh
     ]
     ++ lib.optional cfg.clipboard.enable pkgs.xclip;
 
     home.sessionVariables = {
+      EDITOR = "nvim";
       LANG = "ja_JP.UTF-8";
       LC_ALL = "ja_JP.UTF-8";
       LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+      VISUAL = "nvim";
     }
     // lib.optionalAttrs cfg.aws.enable {
       AWS_VAULT_BACKEND = "file";
     };
 
+    home.file = {
+      ".tmux.conf".source = ../dotfiles/.config/tmux/.tmux.conf;
+      ".zshenv".source = ../dotfiles/.zshenv;
+    };
+
+    xdg.configFile = {
+      "nvim/init.lua".source = ../dotfiles/.config/nvim/init.lua;
+      "zsh/.zshrc".source = ../dotfiles/.config/zsh/.zshrc;
+      "zsh/ohmyzsh".source = "${pkgs.oh-my-zsh}/share/oh-my-zsh";
+      "zsh/prompt.zsh".source = ../dotfiles/.config/zsh/prompt.zsh;
+    }
+    // lib.optionalAttrs cfg.aws.enable {
+      "zsh/modules/aws.before.zsh".source = ../dotfiles/.config/zsh/modules/aws.before.zsh;
+    }
+    // lib.optionalAttrs cfg.azureCli.enable {
+      "zsh/modules/azure.zsh".source = ../dotfiles/.config/zsh/modules/azure.zsh;
+    }
+    // lib.optionalAttrs cfg.aicommit.enable {
+      "zsh/modules/aicommit.zsh".source = ../dotfiles/.config/zsh/modules/aicommit.zsh;
+    }
+    // lib.optionalAttrs cfg.clipboard.enable {
+      "tmux/clipboard-xclip.conf".source = ../dotfiles/.config/tmux/clipboard-xclip.conf;
+    };
+
     programs.direnv = {
       enable = true;
-      enableZshIntegration = true;
       nix-direnv.enable = true;
-    };
-
-    programs.zsh = {
-      enable = true;
-      dotDir = "${config.xdg.configHome}/zsh";
-      enableCompletion = true;
-
-      history = {
-        append = true;
-        ignoreAllDups = true;
-        ignoreDups = true;
-        path = "${config.xdg.stateHome}/zsh/history";
-        share = true;
-      };
-
-      oh-my-zsh = {
-        enable = true;
-        plugins = [ "git" ] ++ lib.optional cfg.aws.enable "aws";
-        theme = "robbyrussell";
-      };
-
-      shellAliases = lib.optionalAttrs cfg.aicommit.enable {
-        aic = "aicommit2 --locale jp --generate 3";
-      };
-
-      initContent = lib.mkAfter ''
-        setopt PROMPT_SUBST
-
-        virtualenv_prompt() {
-          if [[ -n "$VIRTUAL_ENV" ]]; then
-            local venv_name
-            venv_name=$(basename "$VIRTUAL_ENV")
-            local py_version
-            py_version=$("$VIRTUAL_ENV/bin/python" --version 2>&1 | awk '{print $2}')
-            echo "($venv_name:$py_version)"
-          fi
-        }
-
-        aws_profile_prompt() {
-          if [[ -n "$AWS_VAULT" ]]; then
-            echo "(aws-vault:$AWS_VAULT)"
-          else
-            echo ""
-          fi
-        }
-
-        _1st_line() {
-          local venv=$(virtualenv_prompt)
-          local aws_profile=$(aws_profile_prompt)
-          local text="\n''${venv}($PWD)($(TZ=JST-9 date '+%Y-%m-%d %H:%M:%S'))''${aws_profile}"
-          echo "''${text}"
-        }
-
-        _print_first_line() {
-          echo "$(_1st_line)"
-        }
-
-        precmd_functions+=( _print_first_line )
-        export VIRTUAL_ENV_DISABLE_PROMPT=1
-
-        if [[ -f "$HOME/.config/zsh/custom.zsh" ]]; then
-          source "$HOME/.config/zsh/custom.zsh"
-        fi
-
-        ${lib.optionalString cfg.azureCli.enable ''
-          autoload -Uz +X bashcompinit && bashcompinit
-          if [[ -f /etc/bash_completion.d/azure-cli ]]; then
-            source /etc/bash_completion.d/azure-cli
-          fi
-        ''}
-      '';
-    };
-
-    programs.tmux = {
-      enable = true;
-      keyMode = "vi";
-      mouse = true;
-      shell = "${pkgs.zsh}/bin/zsh";
-      extraConfig = ''
-        set -g status-right "Pane: #{pane_id}"
-        unbind -T copy-mode-vi MouseDragEnd1Pane
-        unbind -T copy-mode MouseDragEnd1Pane
-        bind-key -T copy-mode-vi C-n send-keys -X rectangle-toggle
-
-        ${lib.optionalString cfg.clipboard.enable ''
-          bind -T copy-mode-vi y send -X copy-pipe-and-cancel "${pkgs.xclip}/bin/xclip -in -selection clipboard"
-        ''}
-      '';
-    };
-
-    programs.neovim = {
-      enable = true;
-      defaultEditor = true;
-      withPython3 = false;
-      withRuby = false;
-      initLua = ''
-        vim.opt.number = true
-        vim.opt.cursorcolumn = true
-      '';
     };
   };
 }

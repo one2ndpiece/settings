@@ -2,19 +2,35 @@ export ZSH="$ZDOTDIR/ohmyzsh"
 
 ZSH_THEME="robbyrussell"
 
-plugins=(git aws)
+plugins=(git)
 
-source $ZSH/oh-my-zsh.sh
+if [[ -f "$HOME/.config/zsh/modules/aws.before.zsh" ]]; then
+    source "$HOME/.config/zsh/modules/aws.before.zsh"
+fi
 
-#---------------------------------------------
-# aicommit2 のエイリアス
-alias aic='aicommit2 --locale 'jp' --generate 3'
+if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
+    source "$ZSH/oh-my-zsh.sh"
+fi
 
 #---------------------------------------------
 # プロンプトの設定
 source "$HOME/.config/zsh/prompt.zsh"
 #---------------------------------------------
-source "$HOME/.config/zsh/custom.zsh"
+if [[ -f "$HOME/.config/zsh/modules/aicommit.zsh" ]]; then
+    source "$HOME/.config/zsh/modules/aicommit.zsh"
+fi
+#---------------------------------------------
+if [[ -f "$HOME/.config/zsh/modules/azure.zsh" ]]; then
+    source "$HOME/.config/zsh/modules/azure.zsh"
+fi
+#---------------------------------------------
+if command -v direnv >/dev/null 2>&1; then
+    eval "$(direnv hook zsh)"
+fi
+#---------------------------------------------
+if [[ -f "$HOME/.config/zsh/custom.zsh" ]]; then
+    source "$HOME/.config/zsh/custom.zsh"
+fi
 #---------------------------------------------
 # 履歴をファイルに追記する（セッション終了時に上書きせず、既存の履歴に加える）
 setopt append_history
@@ -26,17 +42,13 @@ setopt inc_append_history
 setopt share_history
 
 setopt hist_ignore_all_dups
+
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+mkdir -p "$XDG_STATE_HOME/zsh"
+HISTFILE="$XDG_STATE_HOME/zsh/history"
+HISTSIZE=10000
+SAVEHIST=10000
 #---------------------------------------------
 # 日本語
 export LANG=ja_JP.UTF-8
 export LC_ALL=ja_JP.UTF-8
-
-autoload -Uz +X bashcompinit && bashcompinit
-if [ -f "/etc/bash_completion.d/azure-cli" ]; then
-    source /etc/bash_completion.d/azure-cli
-fi
-#---------------------------------------------
-# aws-vault の設定
-export AWS_VAULT_BACKEND=file
-
-#----------------ここまでがclone----------------

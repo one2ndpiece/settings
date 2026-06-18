@@ -3,6 +3,9 @@
 このディレクトリは、各プロジェクトから再利用する個人向けの Home Manager
 モジュールを提供する。
 
+zsh、tmux、Neovimの設定本文は`dotfiles/`を正とする。このモジュールは
+必要なパッケージを入れ、`dotfiles/`内のファイルをHome Managerで配置する。
+
 ## 管理対象
 
 - zsh と Oh My Zsh
@@ -12,6 +15,7 @@
 - 日本語ロケール
 
 AWS、Azure CLI、`aicommit2`、`xclip` は、必要なプロジェクトだけが有効化する。
+これらの追加設定も`dotfiles/`内の分割ファイルを条件付きで配置する。
 
 ## 利用例
 
