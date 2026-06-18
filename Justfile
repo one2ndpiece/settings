@@ -2,6 +2,7 @@ set dotenv-load
 
 mod sample 'scripts/justfile/sample.just'
 mod aws 'scripts/justfile/aws.just'
+mod misc 'scripts/justfile/misc.just'
 # list
 default:
   just --list
