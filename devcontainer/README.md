@@ -39,15 +39,16 @@ https://github.com/one2ndpiece/settings/pkgs/container/nix-devcontainer
 `flake.nix`へ追加する。テンプレートではHome Manager設定を`flake.nix`内へ
 inlineで定義している。
 
-Home Managerで追加したCLIはイメージビルド中に`/root/.nix-profile`へ
-インストールされ、`/root/.nix-profile/bin`が`PATH`へ入る。そのため、
-Rebuild後はコンテナ内のどのディレクトリでも通常のコマンドとして利用できる。
+Home Managerで追加したCLIは、コンテナ起動後にプロジェクトルートで
+`just home-activate`を実行すると`/root/.nix-profile`へインストールされる。
+`home-activate`は`flake.lock`が無ければ作成し、既にあればそのlockを使う。
 
 新規プロジェクトでは、このリポジトリの`devcontainer/nix/template/`をコピーして
 配置する。コピー後、`flake.nix`は切り取ってプロジェクトルートへ移動する。
-`.dockerignore`と`Justfile`もリポジトリルートへ置く。`Dockerfile`と
-`devcontainer.json`はプロジェクトの`.devcontainer/`へ置く。
-最初のRebuild前に`just flake-lock`を実行して`flake.lock`を作成する。
+`.dockerignore`と`Justfile`もリポジトリルートへ置く。`devcontainer.json`と
+`template.code-workspace`はプロジェクトの`.devcontainer/`へ置く。
+Dev Containerを起動した後、コンテナ内で`just home-activate`を実行して
+プロジェクトのNix/Home Manager環境を反映する。
 `devcontainer-lock.json`はプロジェクト作成後にDev Containersが生成する。
 
 既存プロジェクトにすでに`flake.nix`がある場合は上書きしない。

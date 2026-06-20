@@ -1,5 +1,5 @@
-**
-!.devcontainer/
-!.devcontainer/Dockerfile
-!flake.nix
-!flake.lock
+.git
+.env
+.venv
+.devcontainer/do-not-commit
+dotfiles/.config/zsh/custom.zsh
