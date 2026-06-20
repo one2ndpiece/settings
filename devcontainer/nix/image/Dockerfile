@@ -1,9 +1,8 @@
 FROM ubuntu:24.04
 
 ARG TARGETARCH
-ARG JUST_VERSION=1.53.0
-ARG JUST_SHA256_AMD64=7fedeb22c7e14d9ef1551e8b793700866d80f409f9884b0e80ebb65c11d4874d
-ARG JUST_SHA256_ARM64=f29d8e72380bc144465f632c7d59da311205eef2923d57511708b05b82f2e64f
+# stable resolves to the latest non-prerelease GitHub release at build time.
+ARG JUST_VERSION=stable
 ARG NIX_VERSION=latest
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -30,18 +29,29 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN case "${TARGETARCH:-$(dpkg --print-architecture)}" in \
-      amd64) just_target="x86_64-unknown-linux-musl"; just_sha256="${JUST_SHA256_AMD64}" ;; \
-      arm64) just_target="aarch64-unknown-linux-musl"; just_sha256="${JUST_SHA256_ARM64}" ;; \
+      amd64) just_target="x86_64-unknown-linux-musl" ;; \
+      arm64) just_target="aarch64-unknown-linux-musl" ;; \
       *) echo "Unsupported architecture: ${TARGETARCH:-$(dpkg --print-architecture)}" >&2; exit 1 ;; \
     esac \
-    && just_archive="just-${JUST_VERSION}-${just_target}.tar.gz" \
-    && just_url="https://github.com/casey/just/releases/download/${JUST_VERSION}" \
+    && just_version="${JUST_VERSION}" \
+    && if [[ "${just_version}" == "stable" || "${just_version}" == "latest" ]]; then \
+      just_version="$(curl --fail --location --silent --show-error https://api.github.com/repos/casey/just/releases/latest \
+        | sed -n "s/.*\"tag_name\": *\"\([^\"]*\)\".*/\1/p" \
+        | head -n 1)"; \
+    fi \
+    && if [[ ! "${just_version}" =~ ^[0-9]+[.][0-9]+[.][0-9]+$ ]]; then \
+      echo "Could not resolve a stable just release: ${just_version}" >&2; \
+      exit 1; \
+    fi \
+    && just_archive="just-${just_version}-${just_target}.tar.gz" \
+    && just_url="https://github.com/casey/just/releases/download/${just_version}" \
     && curl --fail --location --silent --show-error "${just_url}/${just_archive}" -o "/tmp/${just_archive}" \
-    && printf '%s  %s\n' "${just_sha256}" "/tmp/${just_archive}" | sha256sum --check --strict - \
+    && curl --fail --location --silent --show-error "${just_url}/SHA256SUMS" -o /tmp/just-SHA256SUMS \
     && cd /tmp \
+    && grep -F "  ${just_archive}" just-SHA256SUMS | sha256sum --check --strict - \
     && tar -xzf "${just_archive}" just \
     && install -m 0755 just /usr/local/bin/just \
-    && rm -f just "${just_archive}" \
+    && rm -f just "${just_archive}" just-SHA256SUMS \
     && just --version
 
 RUN if [[ "${NIX_VERSION}" == "latest" ]]; then \

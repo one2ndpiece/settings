@@ -44,6 +44,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Resolve just stable release
+        id: just
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="$(gh release view --repo casey/just --json tagName,isDraft,isPrerelease --jq 'select(.isDraft == false and .isPrerelease == false) | .tagName')"
+          test -n "${version}"
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
+
       - id: build
         uses: docker/build-push-action@v7
         with:
@@ -52,6 +61,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           pull: true
           no-cache: true
+          build-args: |
+            JUST_VERSION=${{ steps.just.outputs.version }}
           outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
 
       - name: Smoke test
