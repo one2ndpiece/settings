@@ -13,7 +13,6 @@
 			"Justfile": "shellscript",
 			"*.just": "shellscript"
 		},
-		"workbench.tree.expandMode": "doubleClick",
 		"markdown.preview.scrollPreviewWithEditor": false,
 		"markdown.preview.scrollEditorWithPreview": false,
 		"github.copilot.chat.commitMessageGeneration.instructions": [
