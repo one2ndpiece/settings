@@ -52,7 +52,6 @@
                   curl
                   gh
                   jq
-                  just
                   openssh
                   ripgrep
                   tree

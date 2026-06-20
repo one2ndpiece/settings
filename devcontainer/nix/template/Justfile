@@ -4,6 +4,17 @@ set dotenv-load
 default:
   just --list
 
+# create or update flake.lock
+flake-lock:
+  nix flake lock
+
+# activate the Home Manager profile
+home-activate:
+  @if [ ! -f flake.lock ]; then \
+    nix flake lock; \
+  fi
+  nix run --no-write-lock-file path:$PWD#home-activate
+
 # copy mounted host SSH files into the devcontainer root home
 copy-ssh source_dir="/opt/.ssh" target_dir="/root/.ssh":
   @if [ ! -d "{{source_dir}}" ]; then \

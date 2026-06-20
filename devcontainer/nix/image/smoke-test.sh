@@ -8,6 +8,7 @@ fi
 
 nix --version
 nix store info --store local
+just --version
 locale -a | grep -qx "ja_JP.utf8"
 LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8 locale >/dev/null
 
@@ -26,3 +27,11 @@ test "$(nix eval --raw "path:${flake_dir}#smoke")" = "ok"
 cp --dereference /etc/os-release /tmp/os-release
 store_path="$(nix-store --add-fixed sha256 /tmp/os-release)"
 test -e "${store_path}"
+
+justfile="$(mktemp)"
+cat >"${justfile}" <<'EOF'
+[arg("name", long="name", short="n")]
+hello name="world":
+  @echo "{{name}}"
+EOF
+test "$(just --justfile "${justfile}" hello --name bootstrap)" = "bootstrap"

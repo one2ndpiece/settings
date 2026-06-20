@@ -7,6 +7,17 @@ mod misc 'scripts/justfile/misc.just'
 default:
   just --list
 
+# flake.lockを作成・更新
+flake-lock:
+  nix flake lock
+
+# Home Managerプロファイルを有効化
+home-activate:
+  @if [ ! -f flake.lock ]; then \
+    nix flake lock; \
+  fi
+  nix run --no-write-lock-file path:$PWD#home-activate
+
 [arg("email",long="email",short="e")]
 [arg("name",long="name",short="n")]
 init email="$EMAIL" name="$NAME":

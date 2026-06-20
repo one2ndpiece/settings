@@ -13,7 +13,7 @@
 ghcr.io/one2ndpiece/nix-devcontainer:ubuntu-24.04
 ```
 
-このイメージはUbuntu 24.04、Nix、`ja_JP.UTF-8` localeを含む。
+このイメージはUbuntu 24.04、`just`、Nix、`ja_JP.UTF-8` localeを含む。
 
 このタグは週次で再ビルドし、最新の`ubuntu:24.04`とNixを取り込む。
 各プロジェクトへの反映は、Dev ContainerのRebuildを手動で実行する。
@@ -43,10 +43,12 @@ Home Managerで追加したCLIはイメージビルド中に`/root/.nix-profile`
 インストールされ、`/root/.nix-profile/bin`が`PATH`へ入る。そのため、
 Rebuild後はコンテナ内のどのディレクトリでも通常のコマンドとして利用できる。
 
-新規プロジェクトでは`template/`の内容を配置する。`.dockerignore`、
-`flake.nix`、`Justfile`はリポジトリルートへ置く。`Dockerfile`、
-`devcontainer.json`、`devcontainer-lock.json`はプロジェクトの`.devcontainer/`へ置く。
-最初のRebuild前に`nix flake lock`を実行して`flake.lock`を作成する。
+新規プロジェクトでは、このリポジトリの`devcontainer/nix/template/`をコピーして
+配置する。コピー後、`flake.nix`は切り取ってプロジェクトルートへ移動する。
+`.dockerignore`と`Justfile`もリポジトリルートへ置く。`Dockerfile`と
+`devcontainer.json`はプロジェクトの`.devcontainer/`へ置く。
+最初のRebuild前に`just flake-lock`を実行して`flake.lock`を作成する。
+`devcontainer-lock.json`はプロジェクト作成後にDev Containersが生成する。
 
 既存プロジェクトにすでに`flake.nix`がある場合は上書きしない。
 テンプレートの`inputs`、`homeConfigurations`、`packages`、`apps`、
