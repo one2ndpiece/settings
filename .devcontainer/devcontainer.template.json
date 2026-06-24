@@ -1,0 +1,43 @@
+{
+  "name": "settings",
+  "image": "ghcr.io/one2ndpiece/nix-devcontainer:ubuntu-24.04",
+  "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind,consistency=cached",
+  "workspaceFolder": "${localWorkspaceFolder}",
+  "mounts": [
+    "source=HOST_SSH_DIR,target=/opt/.ssh,type=bind,readonly",
+    "source=settings-codex,target=/root/.codex,type=volume"
+  ],
+  "remoteUser": "root",
+  "containerEnv": {
+    "USER": "root"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "workbench.colorCustomizations": {
+          "titleBar.activeBackground": "#19549C",
+          "titleBar.activeForeground": "#ffffff",
+          "activityBar.background": "#02A7E3",
+          "activityBar.foreground": "#ffffff"
+        },
+        "editor.formatOnType": true,
+        "editor.formatOnSave": true,
+        "evenBetterToml.formatter.columnWidth": 1,
+        "evenBetterToml.formatter.arrayAutoCollapse": true
+      },
+      "extensions": [
+        "mhutchie.git-graph",
+        "vscode-icons-team.vscode-icons",
+        "ms-azuretools.vscode-docker",
+        "openai.chatgpt",
+        "jnoortheen.nix-ide"
+      ]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.0": {}
+  },
+  "runArgs": [
+    "--add-host=host.docker.internal:host-gateway"
+  ]
+}
