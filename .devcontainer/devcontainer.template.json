@@ -15,9 +15,9 @@
     "vscode": {
       "settings": {
         "workbench.colorCustomizations": {
-          "titleBar.activeBackground": "#19549C",
+          "titleBar.activeBackground": "#4598ff",
           "titleBar.activeForeground": "#ffffff",
-          "activityBar.background": "#02A7E3",
+          "activityBar.background": "#27bff767",
           "activityBar.foreground": "#ffffff"
         },
         "editor.formatOnType": true,

@@ -10,10 +10,12 @@
   "customizations": {
     "vscode": {
       "settings": {
-        "editor.formatOnType": true,
-        "editor.formatOnSave": true,
-        "evenBetterToml.formatter.columnWidth": 1,
-        "evenBetterToml.formatter.arrayAutoCollapse": true
+        "workbench.colorCustomizations": {
+          "titleBar.activeBackground": "#4598ff",
+          "titleBar.activeForeground": "#ffffff",
+          "activityBar.background": "#27bff767",
+          "activityBar.foreground": "#ffffff"
+        }
       },
       "extensions": [
         "mhutchie.git-graph",
